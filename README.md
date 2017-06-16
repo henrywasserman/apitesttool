@@ -1,4 +1,4 @@
-# responsecompare
+# apitesttool 
 Http API Request Response Test Harness
 
 Makes API requests and compares the json or xml responses to expected results.
