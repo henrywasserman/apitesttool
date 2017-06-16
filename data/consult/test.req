@@ -1,0 +1,3 @@
+TESTCASE 00019, Create Patients From CSV
+  CREATE_PATIENTS_FROM_CSV ${consult-protocol}://${consult-host}:${consult-port}/${consult-end-point}
+  BODY_FILE templates/registration
