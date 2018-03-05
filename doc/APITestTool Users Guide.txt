@@ -53,9 +53,6 @@ GET_IMAGES <url>
 GETLIST_JASON <url>
   <url> is the complete URL for an adview request expected to return JSON, not XML. The JSON that is returned is then changed into xml and then transformed like the other xml responses
 
-GET_WITH_SQL_TRACETABLES <url>
-
-
 POST <url>
   <url> is the complete URL for the request without "http://" at the start
   This command will make an HTTP POST RESTful request, save and save off the resultant XML file. This command also works for LPA's hashtable format. In the case of hashtable, the binary file is saved but then converted to XML for further validation and processing.
@@ -70,7 +67,7 @@ SET_HEADER <header:value>
   <header:value> is a header name and it's value separated by a colon (e.g. User-Agent:E71). This command must be immediately follow a GET, POST or POST_XML command as it will associated with it. You can specify as many SET_HEADER commands as you like but they must immediately follow the associated verb.
 
 SKIP_COMPARE
-  This command takes no params. This indicates that the test should not invoke any of the compare steps primarly used with XML based commands. This was added for the sake of the GET_WITH_SQL_TRACETABLES command, which does its own validation and does not need the typical XML comparison.
+  This command takes no params. This indicates that the test should not invoke any of the compare steps
   
 TESTCASE <test_id>, <some description>
   <test_id> is a string ID for the test case

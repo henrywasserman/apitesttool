@@ -29,12 +29,8 @@ public class MakeRequests extends junit.framework.TestCase {
 	static final Logger logger = Logger.getLogger(MakeRequests.class);
 	private static boolean runonce = false;
 	private Request req = null;
-	private String results = "";
-	private static StringBuffer datadir = null;
-	private static StringBuffer requestFile = null;
 	private static ArrayList<TestCase> testcaseList = null;
-	private int testNumber = 0;
-	private static XmlWritingListener writingListener = null;
+	private int testNumber;
 	private boolean testresult = true;
 	private boolean testrailUpdated = false;
 
@@ -48,7 +44,7 @@ public class MakeRequests extends junit.framework.TestCase {
 		PropertyConfigurator.configure("properties/log4j.properties");
 		JUnitCore runner = new JUnitCore();
 		File reportDirectory = new File("reports");
-		writingListener = new XmlWritingListener(reportDirectory);
+		XmlWritingListener writingListener = new XmlWritingListener(reportDirectory);
 		runner.addListener(new TextListener(System.out));
 		runner.addListener(writingListener);
 		writingListener.startFile(suite().getClass());
@@ -59,22 +55,22 @@ public class MakeRequests extends junit.framework.TestCase {
 
 	public static TestSuite suite() {
 		TestSuite suite = new TestSuite();
-		String testname = "";
+		String testname;
 		String responseCompareRoot = Utilities.Instance.getResponseCompareRoot();
 		logger.info("Here is responseCompareRoot: " + responseCompareRoot);
-		datadir = new StringBuffer(responseCompareRoot + File.separator + "data");
+		StringBuffer datadir = new StringBuffer(responseCompareRoot + File.separator + "data");
 
 		testcaseList = new ArrayList<TestCase>();
-		requestFile = new StringBuffer(datadir.toString());
+		StringBuffer requestFile = new StringBuffer(datadir.toString());
 
 		requestFile.append(File.separator + "consult");
 
 		if (System.getProperty("test.dir") == null) {
 			logger.info("test.dir is null");
-		} else if (!System.getProperty("test.dir").isEmpty()) {
+		} //else if (!System.getProperty("test.dir").isEmpty()) {
 			// requestFile.append(File.separator +
 			// System.getProperty("test.dir"));
-		}
+		//}
 
 		logger.info("Here is requestfile: " + requestFile);
 
@@ -95,9 +91,9 @@ public class MakeRequests extends junit.framework.TestCase {
 			runonce = true;
 		}
 
-		if (!PropertiesSingleton.Instance.getProperty("testcase").isEmpty()) {
+		if (!PropertiesSingleton.Instance.getProperty("testcase").isEmpty())
 			System.setProperty("tc", PropertiesSingleton.Instance.getProperty("testcase"));
-		}
+
 
 		if (!PropertiesSingleton.Instance.getProperty("filelist").isEmpty()) {
 			System.setProperty("filelist", PropertiesSingleton.Instance.getProperty("filelist"));
@@ -157,7 +153,7 @@ public class MakeRequests extends junit.framework.TestCase {
 		String dateTime = DateFormatUtils.format(new Date(), "hh:mm:ss a");
 		String testRunName = PropertiesSingleton.Instance.getProperty("testrail-testrun-name") + " " + dateTime;
 		JSONToMap.Instance.put("testrail-testrun-name", testRunName);
-		ParsedRequest pr = null;
+		ParsedRequest pr;
 		for (ParsedRequest request : testcaseList.get(testNumber).getRequests()) {
 			try {
 				testcaseList.get(testNumber).incrementTestRequestCounter();
@@ -196,7 +192,7 @@ public class MakeRequests extends junit.framework.TestCase {
 			} catch (java.lang.Exception e) {
 				e.printStackTrace();
 				req.getTest().saveRequestURLs();
-				results = req.getPathGenerator().getResponseFile() + ".xml" + "***" + "TestID: "
+				String results = req.getPathGenerator().getResponseFile() + ".xml" + "***" + "TestID: "
 						+ req.getTest().getTestCaseID() + " failed: " + "\n " + e.getMessage() + "\n "
 						+ StringUtils.join(e.getStackTrace()).substring(0, 1024);
 				logger.info("TestID: " + req.getTest().getTestCaseID() + " failed: "
@@ -228,7 +224,7 @@ public class MakeRequests extends junit.framework.TestCase {
 		if (PropertiesSingleton.Instance.getProperty("call-testrail").toLowerCase().equals("true")) {
 			TestCase test = req.getTest();
 			String testcaseName = req.getTest().getTestCaseID();
-			String testcaseNumber = "";
+			String testcaseNumber;
 			if (JSONToMap.Instance.getTestRailDescriptions().get(testcaseName) != null) {
 				testcaseNumber = JSONToMap.Instance.getTestRailDescriptions().get(testcaseName).toString();
 			}
@@ -239,9 +235,9 @@ public class MakeRequests extends junit.framework.TestCase {
 			String testrail_host = PropertiesSingleton.Instance.getProperty("testrail-host");
 			String testrailusername = PropertiesSingleton.Instance.getProperty("testrail-username");
 			String testrailpassword = PropertiesSingleton.Instance.getProperty("testrail-password");
-			String status = "";
+			String status;
 			String commandBody = "";
-			String mpi = "";
+			String mpi;
 			String emptyVariable = PropertiesSingleton.Instance.getProperty("emptyVariable");
 			if (JSONToMap.Instance.getMap().get("static_mpi") != null) {
 				mpi = JSONToMap.Instance.getMap().get("static_mpi").toString();

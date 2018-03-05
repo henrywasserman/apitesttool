@@ -5,6 +5,7 @@ import org.apache.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Properties;
 
@@ -53,6 +54,19 @@ public class OracleDbManager extends DatabaseManager {
 		}
 	   return conn;	
 	}
+	public java.sql.Timestamp getDatabaseTimeStamp() throws SQLException, Exception {
+
+		String sql = "SELECT SYSTIMESTAMP FROM DUAL";
+		ResultSet resultSet = this.executeQuery(sql);
+
+		java.sql.Timestamp currTime = null;
+
+		while (resultSet.next()) {
+			currTime = resultSet.getTimestamp(1);
+		}
+		return currTime;
+	}
+
 
 	//public void closeSSHTunnel() {
 		//SSHTunnel.Instance.closeTunnel();

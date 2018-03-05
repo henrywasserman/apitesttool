@@ -108,7 +108,9 @@ public abstract class Request {
 		log = test.getRequests().get(test_request_counter).getLog();
 		url = test.getRequests().get(test_request_counter).getURL().trim();
 		url = InterpolateRequest.Instance.interpolateString(url);
-		url = url.replace(" ", "%20");
+		if (!test.getRequests().get(test_request_counter).getRequestType().contains("SQL")) {
+			url = url.replace(" ", "%20");
+		}
 
 		if (!url.isEmpty() && url.startsWith("http")) {
 			URL javaUrl = new URL(url);

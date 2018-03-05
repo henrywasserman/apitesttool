@@ -46,9 +46,11 @@ public class SqlServerDbManager extends DatabaseManager {
 		String mssqlHost = properties.getProperty("mssql-host");
 		String mssqlPort = properties.getProperty("mssql-port");
 		String mssqlDbName = properties.getProperty("mssql-dbname");
+		logger.info("java.library.path: " + System.getProperty("java.library.path"));
 
 		String connectionString = MessageFormat.format(mssqlUrl, mssqlHost,
 				mssqlPort, mssqlDbName);
+		logger.info(connectionString);
 		Connection conn = DriverManager.getConnection(connectionString, user,
 				password);
 

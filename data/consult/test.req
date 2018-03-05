@@ -1,3 +1,7 @@
-TESTCASE 00019, Create Patients From CSV
-  CREATE_PATIENTS_FROM_CSV ${consult-protocol}://${consult-host}:${consult-port}/${consult-end-point}
-  BODY_FILE templates/registration
+#TESTCASE sqltest, sqltest
+#  RUN_SQL_FROM_FILE data/consult/datadriven/sqlfarm.sql
+
+TESTCASE sqlexample, sqlexample
+  RUN_ORACLE_SQL SELECT * FROM SC_BASE.NAME WHERE NAME_LAST = 'SMITH'
+  RUN_SQLSERVER_SQL SELECT TOP 10 Claimno_PFK , Allowed , Proccode , Billed , Adjust , ADJCODE , Lineflag , adjrefo FROM dbo.Claim_Details WHERE Lineflag = 'C'
+  COMPARE

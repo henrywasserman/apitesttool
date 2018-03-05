@@ -115,8 +115,9 @@ public enum Utilities {
 		StringBuffer requestprops = null;
 		if (System.getProperties().getProperty("data.dir") == null) {
 			requestprops = new StringBuffer(System.getProperty("user.dir") +
-					File.separator + ".." + File.separator +
-					"properties/" + ((System.getProperties().getProperty("propfile") == null) ? "responsecompare.properties" :
+					File.separator +
+					"properties" + File.separator +
+					((System.getProperties().getProperty("propfile") == null) ? "responsecompare.properties" :
 						System.getProperties().getProperty("propfile") + ".properties"));
 		}
 		responsecompare_props = new Properties();

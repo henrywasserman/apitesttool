@@ -66,7 +66,9 @@ public class TestCase {
 		commands.put("POST_WITH_AUTHCACHE","");
 		commands.put("POST_WITH_FILE_BODY","");
 		commands.put("PUT","");
-		commands.put("RUN_SQL","");
+		commands.put("RUN_SQL_FROM_FILE","");
+		commands.put("RUN_ORACLE_SQL","");
+        commands.put("RUN_SQLSERVER_SQL","");
 	}
 
 	public TestCase() {
@@ -468,9 +470,10 @@ public class TestCase {
 		this.sqlStrings.put(key, value);
 	}
 
+
 	public List<String> getDataValidators() {
-		return dataValidators;
-	}
+        return dataValidators;
+    }
 
 	public void setDataValidators(List<String> dataValidators) {
 		this.dataValidators = dataValidators;

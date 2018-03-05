@@ -41,8 +41,12 @@ public enum RequestFactory {
 			req = new Put(test);
 		} else if (type.equals("remote_shell")) {
 			req = new RemoteShell(test);
-		} else if (type.equals("run_sql")) {
-			req = new RunSQL(test);
+		} else if (type.equals("run_oracle_sql")) {
+			req = new RunOracleSQL(test);
+		} else if (type.equals("run_sqlserver_sql")) {
+			req = new RunSQLServerSQL(test);
+		} else if (type.equals("run_sql_from_file")) {
+			req = new RunSQLFromFile(test);
 //		} else if (type.toLowerCase().equals("sample_keyword")) {
 //			req = new SampleKeywordClassfile(test);
 		} else if (type.equals("expect_error")) {

@@ -59,12 +59,13 @@ public abstract class DatabaseManager {
 
 	public ResultSet executeQuery(String sql) throws SQLException, Exception {
 		try {
+			Properties props = Utilities.Instance.getTestProperties();
 			stmt = conn.createStatement();
 			rs = stmt.executeQuery(sql);
 		} catch (SQLException e) {
 			e.printStackTrace();
 			try {
-				//conn.close();
+				conn.close();
 				stmt.close();
 			} catch (SQLException e2) {
 				e2.printStackTrace();

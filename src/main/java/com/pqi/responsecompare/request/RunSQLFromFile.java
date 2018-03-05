@@ -2,7 +2,6 @@ package com.pqi.responsecompare.request;
 
 import com.pqi.responsecompare.configuration.OracleDbManager;
 import com.pqi.responsecompare.configuration.PropertiesSingleton;
-import com.pqi.responsecompare.configuration.SSHTunnel;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.engine.jdbc.internal.BasicFormatterImpl;
@@ -11,20 +10,24 @@ import org.hibernate.engine.jdbc.internal.Formatter;
 import java.io.File;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
-public class RunSQL extends Request {
-	static final Logger logger = Logger.getLogger(RunSQL.class);
+public class RunSQLFromFile extends Request {
+	static final Logger logger = Logger.getLogger(RunSQLFromFile.class);
 	private ResultSet rs = null;
 	private String query = "";
 	private OracleDbManager db = null;
 	private final File sqlFarmTable = new File ("reports/sql_farm_table.html");
 	private String description = "";
+	private String stringResult = "";
+	private String currentTime = "";
 	private List<String> la = null;
 	private final Formatter formatter = new BasicFormatterImpl();
 	private boolean foundQueryEnd = true;
 
-	public RunSQL(TestCase test) throws Exception {
+	public RunSQLFromFile(TestCase test) throws Exception {
 		super(test);
 	}
 
@@ -36,7 +39,7 @@ public class RunSQL extends Request {
 
 		try {
 			logger.debug("Getting db Oracle Manager");
-			SSHTunnel.Instance.openTunnel();
+			//SSHTunnel.Instance.openTunnel();
 			db = new OracleDbManager(PropertiesSingleton.Instance.getProps());
 
 			startCreateHTML();
@@ -48,7 +51,7 @@ public class RunSQL extends Request {
 			req_result = runQuery();
 			if (req_result)
 			{
-				// Have not decided what to do yet.
+				//to do
 			}
 			logger.debug("Calling rs.close");
 			rs.close();
@@ -63,7 +66,7 @@ public class RunSQL extends Request {
 		} finally {
 			db.CloseStatement();
 			db.closeConnection();
-			SSHTunnel.Instance.closeTunnel();
+			//SSHTunnel.Instance.closeTunnel();
 		}
 	}
 
@@ -91,10 +94,13 @@ public class RunSQL extends Request {
 				{
 					query = query.replaceAll(";", "");
 					logger.debug(query);
+					currentTime  = new SimpleDateFormat("MM/dd/yyy HH.mm.ss").format(new Date());
 					rs = db.executeQuery(query);
+					stringResult = "Pass<br><i>" + currentTime + "</i>" ;
 					addHTML(query);
 					foundQueryEnd = true;
 					query = "";
+					stringResult = "";
 					result = rs.next();
 				}
 
@@ -107,7 +113,9 @@ public class RunSQL extends Request {
 				}
 				else
 				{
-					throw e;
+					stringResult = "Fail: <font color = 'red'>" +
+							e.getMessage() + "</font>\n<i>" + currentTime + "</i>";
+					addHTML(query);
 				}
 			}
 			catch (Exception e)
@@ -115,6 +123,7 @@ public class RunSQL extends Request {
 				logger.debug("Inside runQuery Exception");
 				logger.debug(e.toString());
 			}
+
 		}
 		endCreateHTML();
 		return result;
@@ -148,12 +157,14 @@ public class RunSQL extends Request {
 				+"     <tr>\n"
 				+ "      <th>Description</th>\n"
 				+ "      <th>SQL</th>\n"
+				+ "      <th>Result</th>\n"
 				+ "    </tr>\n"
 				+ "    <tr>\n"
-				+ "      <td>" + description + "</td>\n"
-				+ "      <td><pre>"
+				+ "      <td width = '30%'>" + description + "</td>\n"
+				+ "      <td width = '50%'><pre>"
 				+ formatter.format(query)
 				+ "</pre></td>\n"
+				+ "<td width = '20%'>" + stringResult + "</td>\n"
 				+ "      </tr>\n"
 				+ "    </table>\n"
 			,true);

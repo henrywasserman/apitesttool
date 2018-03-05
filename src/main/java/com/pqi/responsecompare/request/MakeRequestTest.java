@@ -20,10 +20,6 @@ import com.pqi.responsecompare.compare.CompareResults;
 import com.pqi.responsecompare.configuration.Utilities;
 import com.pqi.responsecompare.reports.JunitReport;
 import com.pqi.responsecompare.reports.XmlWritingListener;
-import com.pqi.responsecompare.request.Request;
-import com.pqi.responsecompare.request.RequestFactory;
-import com.pqi.responsecompare.request.ScriptParser;
-import com.pqi.responsecompare.request.TestCase;
 import com.pqi.responsecompare.splunk.SplunkManager;
 
 public class MakeRequestTest extends junit.framework.TestCase {
@@ -46,7 +42,7 @@ public class MakeRequestTest extends junit.framework.TestCase {
 		this.testNumber = testNumber;
 	}
 
-	public static void main(String args[]) {
+	public static void main(String args[]) throws Exception {
 		PropertyConfigurator.configure("properties/log4j.properties"); 
 		JUnitCore runner = new JUnitCore();
 		File reportDirectory = new File("reports");
@@ -157,9 +153,9 @@ public class MakeRequestTest extends junit.framework.TestCase {
 				req.makeRequests();
 				req.getTest().setComparisonType();
 			
-				if (!req.getTest().getRequests().get(req.getTest().getTestRequestCounter()).getSkipCompare()) {
-					new CompareResults(req.getTest());
-				}
+				//if (!req.getTest().getRequests().get(req.getTest().getTestRequestCounter()).get.getSkipCompare()) {
+				//	new CompareResults(req.getTest());
+				//}
 			
 			} catch (AssertionFailedError aex){
 				// process all the junit assertions here;

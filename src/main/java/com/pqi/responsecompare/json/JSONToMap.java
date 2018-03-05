@@ -2,7 +2,6 @@ package com.pqi.responsecompare.json;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.pqi.responsecompare.configuration.PropertiesSingleton;
-import com.pqi.responsecompare.request.Get;
 import org.apache.log4j.Logger;
 
 import java.net.URLEncoder;
@@ -12,7 +11,7 @@ public enum JSONToMap {
 	
 	Instance;
 	
-	static Logger logger = Logger.getLogger(Get.class);
+	static Logger logger = Logger.getLogger(JSONToMap.class);
 	
 	private HashMap<String,Object> response_map = null;
 	private HashMap<String,Integer> testrail_map = null;
