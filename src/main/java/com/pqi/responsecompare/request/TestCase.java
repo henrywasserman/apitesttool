@@ -333,7 +333,7 @@ public class TestCase {
                                 "function callJenkins () {" +
                                     "var form = document.createElement('form');" +
                                     "form.setAttribute('method', 'post');" +
-                                    "form.setAttribute('action', 'http://performance.ec201.wellogic.com:8080/view/API-Test-Tool/job/Single_API_execution/buildWithParameters?token=testToken&TESTCASENAME=" + getTestCaseID() + "');" +
+                                    "form.setAttribute('action', 'http://sqadevws02:8080/view/API-Test-Tool/job/Single_API_execution/buildWithParameters?token=testToken&TESTCASENAME=" + getTestCaseID() + "');" +
                                     "form.style.display = 'hidden';" +
                                     "document.body.appendChild(form);" +
                                     "form.submit();" +

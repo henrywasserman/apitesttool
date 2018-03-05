@@ -140,7 +140,7 @@
 			</head>
 			<body>
 				<a target="_blank">
-					<img height="45" width="75" src="http://performance.ec201.wellogic.com/userContent/atl.site.logo" />
+					<img height="45" width="75" src="http://sqadevws02/userContent/atl.site.logo" />
 				</a>
 				<p></p>
 				<i></i>
