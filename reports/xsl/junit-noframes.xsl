@@ -18,7 +18,7 @@
 		the specific language governing permissions and limitations under the License. -->
 
 	<xsl:param name="TITLE">
-		API Test Results.
+		SQL Test Results.
 	</xsl:param>
 
 	<!-- Sample stylesheet to be used with Ant JUnitReport output. It creates 
@@ -35,6 +35,14 @@
 
 	<xsl:variable name="RunDate">
 		<xsl:value-of select="//property[@name='TestRunDate']/@value" />
+	</xsl:variable>
+
+	<xsl:variable name="JobName">
+		<xsl:value-of select="system-property('job.name')"/>
+	</xsl:variable>
+
+	<xsl:variable name="BuildNumber">
+		<xsl:value-of select="system-property('build.number')"/>
 	</xsl:variable>
 
 	<xsl:variable name="lcletters">
@@ -140,7 +148,7 @@
 			</head>
 			<body>
 				<a target="_blank">
-					<img height="45" width="75" src="http://sqadevws02/userContent/atl.site.logo" />
+					<img style="-webkit-user-select: none;background-position: 0px 0px, 10px 10px;background-size: 20px 20px;background-image:linear-gradient(45deg, #eee 25%, transparent 25%, transparent 75%, #eee 75%, #eee 100%),linear-gradient(45deg, #eee 25%, white 25%, white 75%, #eee 75%, #eee 100%);" src="http://sqadevws02:8080/userContent/atl.site.logo.gif"/>
 				</a>
 				<p></p>
 				<i></i>
@@ -567,7 +575,7 @@
 
 				<xsl:variable name="dataFile">
 					<xsl:call-template name="replace-string-in-text">
-						<xsl:with-param name="text" select="$linkfilename2" />
+						<xsl:with-param name="text" select="$linkfilename1" />
 						<xsl:with-param name="replace" select="'\'" />
 						<xsl:with-param name="with" select="'/'" />
 					</xsl:call-template>
@@ -594,21 +602,26 @@
 					<tr>
 						<td>
 							<a target="_request"
-								href="../artifact/qatools/responsecompare/data/consult/request/{$dataFile}.html">Request</a>
+								href="/job/{$JobName}/{$BuildNumber}/artifact/apitesttool/data/consult/request{$dataFile}.html">Request</a>
 						</td>
 						<td>
 							<a target="_response"
-								href="../artifact/qatools/responsecompare/data/consult/{$hostname}/response{$dataFile}.json">Response</a>
+								href="/job/{$JobName}/{$BuildNumber}/artifact/apitesttool/data/consult/response{$dataFile}.html">Response</a>
+						</td>
+						<td>
+							<a target="_expectedresponse"
+							   href="/job/{$JobName}/{$BuildNumber}/artifact/apitesttool/data/consult/expectedresponse{$dataFile}.html">Expected Response</a>
 						</td>
 
 						<td>
-						<a href="javascript:lhs_url='../artifact/qatools/responsecompare/data/consult/{$hostname}/response/transformed{$dataFile}.xml';rhs_url='../artifact/qatools/responsecompare/data/consult/{$hostname}/expectedresponse/transformed{$dataFile}.xml';window.open('ajax.html', 'File Diff', 'width=1600,height=800');">Compare</a>
-							<!--<a href="javascript:lhs_url='../artifact/qatools/responsecompare/data/consult/{$hostname}/response/transformed{$dataFile}.xml';rhs_url='../artifact/qatools/responsecompare/data/consult/{$hostname}/expectedresponse/transformed{$dataFile}.xml';window.open('ajax.html', 'File Diff', 'width=1600,height=800');">Compare</a>-->
+						<a href="javascript:lhs_url='/job/{$JobName}/{$BuildNumber}/artifact/apitesttool/data/consult/response/{$dataFile}.json';rhs_url='/job/{$JobName}/{$BuildNumber}/artifact/apitesttool/data/consult/expectedresponse/{$dataFile}.json';window.open('ajax.html', 'File Diff', 'width=1600,height=800');">Compare</a>
 						</td>
+						<!-->
 						<td>
 							<a target="_transformedresponse"
 								href="../artifact/qatools/responsecompare/data/consult/{$hostname}/response/transformed{$dataFile}.xml">Transformed Response</a>
 						</td>
+						<-->
 					</tr>
 				</table>
 				<p></p>

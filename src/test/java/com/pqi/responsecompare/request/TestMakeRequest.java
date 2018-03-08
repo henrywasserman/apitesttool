@@ -122,7 +122,7 @@ public class TestMakeRequest extends junit.framework.TestCase {
 				req.makeRequests();
 				req.getTest().setComparisonType();
 			
-				if (!req.getTest().getSkipCompare()) {
+				if (!req.getTest().getCompare()) {
 					new CompareResults(req.getTest());
 				}
 			

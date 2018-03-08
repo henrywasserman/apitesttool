@@ -1,7 +1,7 @@
-#TESTCASE sqltest, sqltest
+#TESTCASE test1, test description
 #  RUN_SQL_FROM_FILE data/consult/datadriven/sqlfarm.sql
 
-TESTCASE sqlexample, sqlexample
+TESTCASE FirstSQLTestcase, This is the First Sql Testcase
   RUN_ORACLE_SQL SELECT * FROM SC_BASE.NAME WHERE NAME_LAST = 'SMITH'
   RUN_SQLSERVER_SQL SELECT TOP 10 Claimno_PFK , Allowed , Proccode , Billed , Adjust , ADJCODE , Lineflag , adjrefo FROM dbo.Claim_Details WHERE Lineflag = 'C'
   COMPARE

@@ -56,15 +56,7 @@ public class RunSQLServerSQL extends Request {
 		logger.info(sql);
 		resultSet = dbManager.executeQuery(sql);
 		SQLToMap.Instance.appendMap(resultSet);
-		/*
-		ResultSetMetaData rsmd = resultSet.getMetaData();
-		int numberOfColumns = rsmd.getColumnCount();
-		while (resultSet.next()) {
-			for (int i = 1; i <= numberOfColumns; i++) {
-				logger.info(rsmd.getColumnName(i) + ":" +
-						resultSet.getObject(rsmd.getColumnName(i)));
-			}
-		}
-		*/
+		setupAndOutput(SQLToMap.Instance.getSQLHtml(Integer.valueOf(test_request_counter)),".html");
+		setupAndOutput(SQLToMap.Instance.getSqlJSON(Integer.valueOf(test_request_counter)), ".json");
 	}
 }

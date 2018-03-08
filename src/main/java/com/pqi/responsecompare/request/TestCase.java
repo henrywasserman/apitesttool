@@ -278,7 +278,7 @@ public class TestCase {
 		}
 		
 		if (PropertiesSingleton.Instance.getProps().getProperty("skip.compare").toLowerCase().equals("true")) {
-			requests.get(reqcounter).setCompare(true);
+			requests.get(reqcounter).setCompare(false);
 		}
 	}
 
@@ -333,12 +333,13 @@ public class TestCase {
                                 "function callJenkins () {" +
                                     "var form = document.createElement('form');" +
                                     "form.setAttribute('method', 'post');" +
-                                    "form.setAttribute('action', 'http://sqadevws02:8080/view/API-Test-Tool/job/Single_API_execution/buildWithParameters?token=testToken&TESTCASENAME=" + getTestCaseID() + "');" +
+                                    "form.setAttribute('action', 'http://sqadevws02:8080/job/Single_testcase_execution/buildWithParameters?token=single_SQL&TESTCASENAME=" + getTestCaseID() + "');" +
                                     "form.style.display = 'hidden';" +
                                     "document.body.appendChild(form);" +
                                     "form.submit();" +
                                 "}" +
                             "</script>";
+
         try {
             File file = new File(getRequestFile());
             List<String> lines = FileUtils.readLines(file, "UTF-8");
@@ -400,7 +401,7 @@ public class TestCase {
 		this.testCaseDescription = testCaseDescription;
 	}
 	
-	public boolean getSkipCompare() {
+	public boolean getCompare() {
 		return requests.get(reqcounter).getCompare();
 	}
 
@@ -420,10 +421,12 @@ public class TestCase {
 	public void setComparisonType() {
 		String lastRequest = requests.get(requests.size() - 1).getRequestType();
 		if (lastRequest.toLowerCase().contains("image")) {
-			comparisonType = "image";
+            comparisonType = "image";
+        } else if (lastRequest.toLowerCase().contains("sql")) {
+            comparisonType = "sql";
 		} else if (comparisonType.isEmpty()) {
-			comparisonType = "xml";
-		}
+            comparisonType = "xml";
+        }
 	}
 	
 	public void setRequestFile(String requestfile) {

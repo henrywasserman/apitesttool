@@ -148,14 +148,15 @@ public class MakeRequestTest extends junit.framework.TestCase {
 					req = RequestFactory.Instance.getRequest(testcaseList.get(testNumber));
 				}
 				this.setName(testcaseList.get(testNumber).getTestCaseID() + ": \n" +
-						testcaseList.get(testNumber).getTestCaseDescription());
+					testcaseList.get(testNumber).getTestCaseDescription());
 				SplunkManager.Instance.getLastEventTime();
 				req.makeRequests();
 				req.getTest().setComparisonType();
 			
-				//if (!req.getTest().getRequests().get(req.getTest().getTestRequestCounter()).get.getSkipCompare()) {
-				//	new CompareResults(req.getTest());
-				//}
+				//if (!req.getTest().getRequests().get(req.getTest().getTestRequestCounter()).get.getCompare()) {
+				if (req.getTest().getRequests().get(req.getTest().getTestRequestCounter()).getCompare()) {
+					new CompareResults(req.getTest());
+				}
 			
 			} catch (AssertionFailedError aex){
 				// process all the junit assertions here;

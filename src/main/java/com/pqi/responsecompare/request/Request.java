@@ -20,6 +20,7 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 import org.custommonkey.xmlunit.Transform;
+import org.json.JSONObject;
 import org.junit.Assert;
 
 import java.io.*;
@@ -215,6 +216,11 @@ public abstract class Request {
 	}
 
 	protected void setupAndOutput(String response, String extension) throws Exception {
+
+		if (extension.equals(".json")) {
+			response = (new JSONObject(response)).toString(2);
+		}
+
 		fullpath = new StringBuffer(file);
 		outputfile = new StringBuffer(pathGenerator.getResponseDir() + test.getTestCaseID() + "_" + Integer.valueOf(test.getTestRequestCounter()).toString());
 

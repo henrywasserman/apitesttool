@@ -11,6 +11,8 @@ public enum CompareFactory {
 	public Compare getCompare(TestCase test) {
 		if (test.getComparisonType().equals("xml")) {
 			compare = new XmlCompare(test);
+		} else if (test.getComparisonType().equals("sql")) {
+			compare = new SQLCompare(test);
 		} else if (test.getComparisonType().equals("image")) {
 			compare = new ImageCompare(test);
 		} else if (test.getComparisonType().equals("text")) {
