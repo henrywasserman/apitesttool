@@ -51,7 +51,7 @@ public class RunOracleSQL extends Request {
 
 	protected void executeAndValidateSql (java.sql.Timestamp ts, OracleDbManager dbManager) throws SQLException, Exception {
 
-		String sql = url;
+		String sql = test.getRequests().get(test_request_counter).getSQL();
 		ResultSet resultSet = null;
 		logger.info(sql);
 		resultSet = dbManager.executeQuery(sql);

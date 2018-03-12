@@ -43,6 +43,7 @@ public class ParsedRequest {
 	private int patientNumber = 0;
 	private Properties props = null;
 	private StringEntity body = null;
+	private String SQL = "";
 	private String assign = null;
 	private File body_file = null;
 	private boolean ignore_global_headers = false;
@@ -62,6 +63,7 @@ public class ParsedRequest {
 	private boolean isIF = false;
 	private boolean isELSE = false;
 	private boolean runRequest = true;
+	private boolean isSQL = false;
 	private String conditional = "";
 	private boolean testrail = false;
 	private boolean reloadEnvironmentAgnosticProperties = false;
@@ -83,6 +85,10 @@ public class ParsedRequest {
 
 		param = formatURL(param);
 		this.url = param;
+
+		if (requestType.matches("RUN_.*_SQL.*")) {
+			isSQL = true;
+		}
 
 		headers = new HashMap<String, String>();
 		validations = new HashMap<String, HashMap<String, String>>();
@@ -109,6 +115,10 @@ public class ParsedRequest {
 
 	public void setConditional(String conditional) {
 		this.conditional = conditional;
+	}
+
+	public void setIsSQL() {
+		this.isSQL = true;
 	}
 
 	public void testConditional() throws Exception {
@@ -146,6 +156,10 @@ public class ParsedRequest {
 
 	public boolean getIsELSE() {
 		return isELSE;
+	}
+
+	public boolean getIsSQL() {
+		return isSQL;
 	}
 
 	public String getEncoding() {
@@ -276,6 +290,10 @@ public class ParsedRequest {
 		return returnurl;
 	}
 
+	public String getSQL() {
+		return SQL;
+	}
+
 	public void setURL(String url) {
 		this.url = url;
 	}
@@ -384,6 +402,12 @@ public class ParsedRequest {
 		}
 	}
 
+
+	public void setSQL(String SQL) throws Exception {
+		StringBuffer sb = new StringBuffer(this.SQL);
+		sb.append(SQL);
+		this.SQL = sb.toString();
+	}
 
 	public void setJSONVariable(String pair) throws Exception {
 		String name = null;

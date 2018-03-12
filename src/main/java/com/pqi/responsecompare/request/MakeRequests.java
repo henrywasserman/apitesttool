@@ -99,7 +99,6 @@ public class MakeRequests extends junit.framework.TestCase {
 			System.setProperty("filelist", PropertiesSingleton.Instance.getProperty("filelist"));
 		}
 
-
 		for (int i = 0; i < testcaseList.size(); i++) {
 			testname = testcaseList.get(i).getTestCaseID();
 			if (PropertiesSingleton.Instance.getProperty("user.hasmail").toLowerCase().equals("false")) {

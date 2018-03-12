@@ -27,8 +27,10 @@ public class TestCase {
 	private int testcasenumber = 0;
 	private int status = 0;
 	private boolean isWapi = false;
+	private boolean isSQL = false;
 	private boolean isBody = false;
 	private boolean isAssign = false;
+	private boolean isAppend = false;
 	private boolean isJSONAssign = false;
 	private HashMap<String,String> sqlStrings = new HashMap<String,String>();
 	private List<String> dataValidators = new ArrayList<String>();
@@ -68,7 +70,7 @@ public class TestCase {
 		commands.put("PUT","");
 		commands.put("RUN_SQL_FROM_FILE","");
 		commands.put("RUN_ORACLE_SQL","");
-        commands.put("RUN_SQLSERVER_SQL","");
+		commands.put("RUN_SQLSERVER_SQL","");
 	}
 
 	public TestCase() {
@@ -113,9 +115,15 @@ public class TestCase {
 		this.isBody = isBody;
 	}
 
+	public void setIsSQL(boolean isSQL) {
+	    this.isSQL = isSQL;
+    }
+
 	public boolean getIsAssign() {return isAssign; }
 
 	public boolean getIsJSONAssign() {return isJSONAssign;}
+
+	public boolean getIsSQL() {return isSQL;}
 
 	public void resetTestList() {
 		requests = new ArrayList<ParsedRequest>();
@@ -185,6 +193,16 @@ public class TestCase {
 			isBody = true;
 			requests.get(reqcounter).setBody(param);
 		}
+		else if (isSQL == true || command.matches("RUN_.*_SQL")) {
+            isSQL = true;
+            isAppend = true;
+            if (ValidCommands.Instance.getAllValidCommands().contains(param)) {
+                isAppend =  false;
+            } else {
+                requests.get(reqcounter).setSQL(param);
+                isAppend = true;
+            }
+        }
 		else if (command.equals("BODY_FILE")) {
 			requests.get(reqcounter).setBodyFile(param);
 		}
@@ -377,6 +395,14 @@ public class TestCase {
 		this.xsl = xsl;
 	}
 
+	public boolean getIsAppend() {
+	    return isAppend;
+    }
+
+    public void setIsAppend(boolean isAppend) {
+	    this.isAppend = isAppend;
+    }
+
 	public String getTestCaseID() {
 		return testCaseID;
 	}
@@ -506,5 +532,12 @@ public class TestCase {
 			requests.get(requests.size() - 1).setIsELSE(true);
 			requests.get(requests.size() -1 ).setConditional(ifCondition);
 		}
+
+		if (command.matches("RUN_.*_SQL.*")) {
+		    isSQL = true;
+		    isAppend = true;
+        } else {
+		    isSQL = false;
+        }
 	}
 }

@@ -28,8 +28,6 @@ public class ScriptParser {
 	public ArrayList<TestCase> parse() throws Exception {
 
 		ArrayList<TestCase> allTestCases = new ArrayList<TestCase>();
-		
-
 		int counter = Integer.valueOf(PropertiesSingleton.Instance.getProps().getProperty("repeat-testcase"));
 		for (int i = 0; i < counter; i++) {
 
@@ -47,29 +45,7 @@ public class ScriptParser {
 				Pattern ptnTestCase = Pattern.compile("^TESTCASE+\\s+(.*)\\,(.*)");// Expects "TESTCASE my_id, some description"
 				Pattern ptnAPIMethods = Pattern.compile("POST|PUT|GET|DELETE|PATCH");
 
-				ArrayList<String> allValidCommands = new ArrayList<String>(
-						Arrays.asList(
-								"ADD_ROLE_TO_USER_FROM_CSV", "ASSIGN","BODY","BASIC_AUTHORIZATION",
-								"BODY_FILE", "COMPARE_VARIABLES", "CREATE_AUTOMATION_ROLE",
-								"CREATE_PATIENT_PORTAL_USER", "CREATE_AGNOSTIC_PROPERTIES",
-								"CREATE_JSON_FOR_ROLE", "CUSTOM_MAP", "CREATE_PATIENTS_FROM_CSV",
-								"CREATE_USERS", "EXPECT_ERROR", "DELETE","ELSE","GENERATE_GUID",
-								"GET", "GET_CONFIRMATION_TOKEN", "GET_IMAGE", "GET_IMAGES",
-								"GET_WAPI_IMAGE", "GET_ADROTATION",
-								// "SAMPLE_KEYWORD",
-								"GETLIST_JASON", "GET_MINI","GET_WITH_AUTHCACHE","IF",
-								"IGNORE_GLOBAL_HEADERS","INCREMENT_PATIENT_NUMBER","LOG","OPEN_BUG",
-								"POST_IMAGE", "POST_IMAGES", "POST","RUN_ORACLE_SQL","RUN_SQL_FROM_FILE",
-								"RUN_SQLSERVER_SQL","POST_MULTIPART","POST_WITH_AUTHCACHE","REMOTE_SHELL",
-								"RELOAD_ENVIRONMENT_AGNOSTIC_PROPERTIES","JAVASCRIPT",
-								"POST_WITH_FILE_BODY","POST_XML_SUBS", "PUT", "SET_DATETIME",
-								"VALIDATE_HEADER","SKIP_COMPARE","TESTRAIL", "VALIDATE_HEADER_SET",
-								"VALIDATE_HEADER_NOTEXIST", "VALIDATE_IMAGE", "VALIDATE_IMAGES",
-								"TRANSFORM_RESPONSE_FILE","VALIDATE_RAW_RESPONSE",
-								"VALIDATE_STATUS_CODE", "SET_HEADER","COMPARE", "STATUS",
-								"VALIDATE_DATA", "VERIFY_ICD","VERIFY_RESPONSE_TEXT",
-								"VERIFY_MAP_VALUE","WAIT_FOR_DATA"));
-
+				ArrayList<String> allValidCommands = ValidCommands.Instance.getAllValidCommands();
 				Matcher match = null;
 
 				TestCase currentTestCase = null;
@@ -88,10 +64,11 @@ public class ScriptParser {
 
 					if (currentTestCase == null) {
 						append = false;
-					} else if (currentTestCase.getIsAssign() )
-					{
-						append = true;
 					} else if (currentTestCase.getIsJSONAssign()) {
+						append = true;
+					} else if (ValidCommands.Instance.getAllValidCommands().contains(line)) {
+						append = false;
+					} else if (currentTestCase.getIsAppend()) {
 						append = true;
 					} else {
 						append = false;
@@ -108,12 +85,14 @@ public class ScriptParser {
 					}
 
 					match = ptnCommand.matcher(line);
-					if (match.find() && !append) {
+					if (match.find() && (!append)) {
 						if (match.group(1).equals("TESTCASE")) { // We found a new TESTCASE line
 							if (currentTestCase != null) {
 								currentTestCase.setIsBody(false);
 								currentTestCase.setIsAssign(false);
 								currentTestCase.setIsJSONAssign(false);
+								currentTestCase.setIsSQL(false);
+								currentTestCase.setIsAppend(false);
 
 								append = false;
 							}
@@ -141,6 +120,8 @@ public class ScriptParser {
 									currentTestCase.setIsBody(false);
 									currentTestCase.setIsAssign(false);
 									currentTestCase.setIsJSONAssign(false);
+									currentTestCase.setIsSQL(false);
+
 
 									append = false;
 									avoidMailCommands=false;
