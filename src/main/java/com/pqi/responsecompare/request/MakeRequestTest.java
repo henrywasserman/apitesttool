@@ -3,6 +3,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
+import com.pqi.responsecompare.sql.SQLToMap;
 import org.junit.Assert;
 
 import junit.framework.AssertionFailedError;
@@ -150,6 +151,8 @@ public class MakeRequestTest extends junit.framework.TestCase {
 				this.setName(testcaseList.get(testNumber).getTestCaseID() + ": \n" +
 					testcaseList.get(testNumber).getTestCaseDescription());
 				SplunkManager.Instance.getLastEventTime();
+				SQLToMap.Instance.cleanSQLMap();
+				SQLToMap.Instance.cleanSQLMapArray();
 				req.makeRequests();
 				req.getTest().setComparisonType();
 			

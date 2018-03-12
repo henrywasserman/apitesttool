@@ -18,28 +18,38 @@ public enum CreateOutput {
 		json.append("{");
 		int columnCounter = 0;
 		for (String column : sqlMap.get("COLUMN_NAMES")) {
-			columnCounter++;
-			json.append("\"" + column + "\":[");
-			ArrayList<String> sqlArray = sqlMap.get(column);
-			int rowCounter = 0;
-			for (String data: sqlArray) {
-				rowCounter++;
-				if (rowCounter == sqlArray.size()) {
-					if (columnCounter == sqlMap.get("COLUMN_NAMES").size())  {
-						json.append("{\"" + Integer.valueOf(rowCounter) + "\":\"" + data + "\"}]}");
+            columnCounter++;
+            json.append("\"" + column + "\":[");
+            ArrayList<String> sqlArray = sqlMap.get(column);
+            int rowCounter = 0;
+            if (sqlArray == null) {
+                if (columnCounter == sqlMap.get("COLUMN_NAMES").size()) {
+                    json.append("],");
+                } else {
+                    json.append("]}");
+                }
+            } else {
 
-					} else {
-						json.append("{\"" + Integer.valueOf(rowCounter) + "\":\"" + data + "\"}],\n");
-					}
-				} else {
-					if (columnCounter == sqlMap.get("COLUMN_NAMES").size()) {
-						json.append("{\"" + Integer.valueOf(rowCounter) + "\":\"" + data + "\"},\n");
-					} else {
-						json.append("{\"" + Integer.valueOf(rowCounter) + "\":\"" + data + "\"},\n");
-					}
-				}
-			}
-		}
+
+                for (String data : sqlArray) {
+                    rowCounter++;
+                    if (rowCounter == sqlArray.size()) {
+                        if (columnCounter == sqlMap.get("COLUMN_NAMES").size()) {
+                            json.append("{\"" + Integer.valueOf(rowCounter) + "\":\"" + data + "\"}]}");
+
+                        } else {
+                            json.append("{\"" + Integer.valueOf(rowCounter) + "\":\"" + data + "\"}],\n");
+                        }
+                    } else {
+                        if (columnCounter == sqlMap.get("COLUMN_NAMES").size()) {
+                            json.append("{\"" + Integer.valueOf(rowCounter) + "\":\"" + data + "\"},\n");
+                        } else {
+                            json.append("{\"" + Integer.valueOf(rowCounter) + "\":\"" + data + "\"},\n");
+                        }
+                    }
+                }
+            }
+        }
 		return json.toString();
 	}
 
@@ -71,7 +81,10 @@ public enum CreateOutput {
 		}
 		html.append("    </tr>\n");
 
-		int size = sqlMap.get(sqlMap.get("COLUMN_NAMES").get(0)).size();
+		int size = 0;
+		if (sqlMap.get(sqlMap.get("COLUMN_NAMES").get(0)) != null) {
+            size = sqlMap.get(sqlMap.get("COLUMN_NAMES").get(0)).size();
+        }
 		for (int i = 0; i < size; i++) {
 			html.append("    <tr>\n");
 			for (String column : sqlMap.get("COLUMN_NAMES")) {

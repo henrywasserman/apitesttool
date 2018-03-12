@@ -1,6 +1,7 @@
 package com.pqi.responsecompare.request;
 
 import com.pqi.responsecompare.configuration.PropertiesSingleton;
+import com.pqi.responsecompare.sql.SQLToMap;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
@@ -71,6 +72,10 @@ public class ScriptParser {
 					} else if (currentTestCase.getIsAppend()) {
 						append = true;
 					} else {
+						append = false;
+					}
+
+					if (line.contains("TESTCASE")) {
 						append = false;
 					}
 					

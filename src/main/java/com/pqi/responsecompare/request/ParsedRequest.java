@@ -402,10 +402,10 @@ public class ParsedRequest {
 		}
 	}
 
-
 	public void setSQL(String SQL) throws Exception {
 		StringBuffer sb = new StringBuffer(this.SQL);
 		sb.append(SQL);
+		sb.append(" ");
 		this.SQL = sb.toString();
 	}
 
