@@ -390,7 +390,7 @@ public class TestCase {
                                     "document.body.appendChild(form);" +
                                     "form.submit();" +
                                 "}" +
-                            "</script>";
+                            "</script>");
 
         try {
             File file = new File(getRequestFile());
@@ -399,22 +399,23 @@ public class TestCase {
             boolean foundline = false;
             for (String line : lines) {
                 if (line.contains(getTestCaseID() + ",")) {
-                    requestr = requestr + "<DT><b>" + line + "</b>";
+                    requestr.append("<DT><b>" + line + "</b>");
                     foundline = true;
                     continue;
                 }
 
                 if (foundline && !line.contains("TESTCASE")) {
-                    requestr = requestr + "<DD>" + line + "</DD>";
+                    requestr.append( "<DD>" + line + "</DD>");
                 } else if (foundline) {
                     break;
                 }
             }
 
-            requestr = requestr + "<br><br><button id=\"myButton\" class=\"button\" onclick=\"callJenkins()\">Run</button>";
-            requestr = requestr + "<DL></body></html>";
+            requestr.append( "<br><br><button id=\"myButton\" class=\"button\" onclick=\"callJenkins()\">Run</button>");
+            requestr.append( "<DL></body></html>");
 			FileUtils.writeStringToFile(new File(
-				requestdir + testCaseID + "_" + Integer.valueOf(test_request_counter) + ".html"), requestr);
+				requestdir + testCaseID + "_" + Integer.valueOf(test_request_counter) + ".html"), requestr.toString());
+			requestr.delete(0,requestr.length());
 		}
 		catch (Exception e) {
 			e.printStackTrace();
