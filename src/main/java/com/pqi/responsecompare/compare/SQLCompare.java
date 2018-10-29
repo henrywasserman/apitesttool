@@ -69,7 +69,7 @@ public class SQLCompare extends Compare {
 			expected = FileUtils.readFileToString(expectedFile);
 
 			String html = "";
-			TODO: Make sure this does not happen for SQL Requests
+			//TODO: Make sure this does not happen for SQL Requests
 			if (expectedHTMLFile.length() == 0) {
 				html = CreateOutput.Instance.returnEmptyJsonStringHTML();
 			} else {
