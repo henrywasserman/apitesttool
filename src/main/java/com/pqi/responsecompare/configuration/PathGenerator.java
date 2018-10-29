@@ -10,6 +10,8 @@ public class PathGenerator {
 
 	private String response = "";
 	private String responseDir = "";
+	private String expectedDir = "";
+	private String requestDir = "";
 	private String responseTransformed = "";
 	private String expectedTransformed = "";
 	private String expected = "";
@@ -18,10 +20,11 @@ public class PathGenerator {
 	
 	public PathGenerator(TestCase test) {
 		String responseCompareDir = "";
-		String host = PropertiesSingleton.Instance.getProperty("consult-host");
+		//String host = PropertiesSingleton.Instance.getProperty("consult-host");
+		String testDir = PropertiesSingleton.Instance.getProperty("test.dir");
 		responseCompareDir = Utilities.Instance.getResponseCompareRoot();
 		String dataDir = responseCompareDir + File.separator +  "data"; 
-		dataSubDir = dataDir+ File.separator + "consult" + File.separator + host + File.separator;
+		dataSubDir = dataDir+ File.separator + "consult" + File.separator + testDir + File.separator;
 		if (test!=null) {
 			response = dataSubDir + "response"	+ File.separator + test.getTestCaseID() + "_" + Integer.valueOf(test.getTestRequestCounter()).toString();
 			responseTransformed = dataSubDir + "response"	+ File.separator + "transformed" 
@@ -31,6 +34,8 @@ public class PathGenerator {
 			xslDir = responseCompareDir + File.separator + "xsl" + File.separator;
 			expected = dataSubDir + "expectedresponse" + File.separator + test.getTestCaseID();
 			responseDir = dataSubDir + "response" + File.separator;
+			expectedDir = dataSubDir + "expectedresponse" + File.separator;
+			requestDir = dataSubDir + "request" + File.separator;
 		}
 	}
 
@@ -59,5 +64,13 @@ public class PathGenerator {
 			FileUtils.mkdir(responseDir);
 		}
 		return responseDir;
+	}
+
+	public String getRequestDir() {
+			return requestDir;
+	}
+
+	public String getExpectedDir() {
+		return expectedDir;
 	}
 }

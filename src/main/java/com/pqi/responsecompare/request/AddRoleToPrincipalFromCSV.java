@@ -27,7 +27,7 @@ public class AddRoleToPrincipalFromCSV extends Request {
 		super(test);
 	}
 
-	public void makeRequests() {};
+	public void sendRequest() {};
 
 	public void makeRequests(String url) throws Exception {
 
@@ -66,34 +66,6 @@ public class AddRoleToPrincipalFromCSV extends Request {
 		zelda_array.add("254CBEDB54B2078EE053B425660ABED2");//	Problems	View
 		zelda_array.add("2532C6875B160767E053B425660A0973");//	SensitiveData	View
 		zelda_array.add("2532C6875B190767E053B425660A0973");//	Vitals	View		
-		/*
-		zelda_array.add("1C03C1E6FDEE3DDDE0536693490AA8C9");//	AdminSummary	View	0
-		zelda_array.add("1E10CD8FB5217E3CE053B425660A1BDA");//	Alerts	View	0
-		zelda_array.add("17C7857CA436620AE0536693490A79F6");//	Allergies	View	0
-		zelda_array.add("17C7857CA434620AE0536693490A79F6");//	CareAlerts	View	0
-		zelda_array.add("1B078CBD399D4A3CE053B425660A6420");//	CarePreferences	View	0
-		zelda_array.add("1B078CBD399A4A3CE053B425660A6420");//	ClinicalNotes	View	0
-		zelda_array.add("17C7857CA435620AE0536693490A79F6");//	ClinicalSummary	View	0
-		zelda_array.add("1B078CBD39994A3CE053B425660A6420");//	DiagnosticImages	View	0
-		zelda_array.add("1B078CBD39A84A3CE053B425660A6420");//	EngageAccount	Invite	0
-		zelda_array.add("1B078CBD39A64A3CE053B425660A6420");//	EngageAccount	Update	0
-		zelda_array.add("130C447332DC2636E0536693490AFC88");//	Flowsheet	Update	0
-		zelda_array.add("12354D95B956776FE0536693490A135D");//	Flowsheet	View	0
-		zelda_array.add("13ADA6C8C11B4078E0536693490AA9D1");//	Problems	View	0
-		zelda_array.add("1B078CBD39A24A3CE053B425660A6420");//	Immunizations	View	0
-		zelda_array.add("17C7857CA438620AE0536693490A79F6");//	Inbox	Share	0
-		zelda_array.add("17C7857CA437620AE0536693490A79F6");//	Inbox	View	0
-		zelda_array.add("12354D95B957776FE0536693490A135D");//	Labs	View	0
-		zelda_array.add("13ADA6C8C11D4078E0536693490AA9D1");//	Medications	View	0
-		zelda_array.add("1B078CBD399E4A3CE053B425660A6420");//	PatientConsent	View	0
-		zelda_array.add("9C1F7B0A-9034-4EE1-8A33-B7E00CF587DA");//	PatientConsent	Update	0
-		zelda_array.add("1B078CBD399F4A3CE053B425660A6420");//	PatientDirectives	View	0
-		zelda_array.add("1B078CBD39A54A3CE053B425660A6420");//	PatientRelationship	Create	0
-		zelda_array.add("12354D95B955776FE0536693490A135D");//	PatientSearch	View	0
-		zelda_array.add("1C03C1E6FDEF3DDDE0536693490AA8C9");//	Pharmacies	View	0
-		zelda_array.add("1B078CBD39A14A3CE053B425660A6420");//	SensitiveData	View	0
-		zelda_array.add("1B078CBD399C4A3CE053B425660A6420");//	Vitals	View	0
-		*/
 		try {
 			logger.info("TestID: " + test.getTestCaseID());
 			
@@ -166,7 +138,7 @@ public class AddRoleToPrincipalFromCSV extends Request {
 								//for Zelda
 								"organizations/" + id + "/permissions";
 						
-						test.getRequests().get(test.getTestRequestCounter()).setBody(
+						test.getCurrentParsedRequest().setBody(
 								"  	{" +
 										"\"id\": \"2532C6875ADD0767E053B425660A0973\"," +
 										"\"feature\": \"Allergies\"," +
@@ -183,7 +155,7 @@ public class AddRoleToPrincipalFromCSV extends Request {
 
 						
 								
-						test.getRequests().get(test.getTestRequestCounter()).setBody(permissions_json);
+						test.getCurrentParsedRequest().setBody(permissions_json);
 						entity = test.getRequests().get(test_request_counter).getBody();
 						httpput = new HttpPut(url_string);
 						setPutHeaders(test_request_counter);

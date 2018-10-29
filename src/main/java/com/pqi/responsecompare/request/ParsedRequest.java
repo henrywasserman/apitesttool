@@ -37,6 +37,8 @@ public class ParsedRequest {
 	private HashMap<String, String> headers = null;
 	private HashMap<String, HashMap<String, String>> validations = null;
 	private String postXMLSubs = "";
+	private String compareString = "";
+	private String ignoreString = "";
 	private String xslfile = "";
 	private int status = 0;
     private int increment = 0;
@@ -48,6 +50,7 @@ public class ParsedRequest {
 	private File body_file = null;
 	private boolean ignore_global_headers = false;
 	private boolean compare = false;
+	private boolean ignore = false;
 	private boolean basicAuthorization = false;
 	private boolean openBug = false;
 	private String openBugUrl = "";
@@ -67,6 +70,7 @@ public class ParsedRequest {
 	private String conditional = "";
 	private boolean testrail = false;
 	private boolean reloadEnvironmentAgnosticProperties = false;
+	private boolean responseTooLargeForCompareLink = false;
 
 	public ParsedRequest(String requestType, String param) throws Exception {
 
@@ -113,12 +117,32 @@ public class ParsedRequest {
 		return runRequest;
 	}
 
+	public void setCompareString(String compare) {
+		compareString = compare;
+	}
+
+	public String getCompareString() {
+		return compareString;
+	}
+
+	public void setIgnoreString(String ignore) {ignoreString = ignore; }
+
+	public String getIgnoreString() {return ignoreString; }
+
 	public void setConditional(String conditional) {
 		this.conditional = conditional;
 	}
 
 	public void setIsSQL() {
 		this.isSQL = true;
+	}
+
+	public void setResponseTooLargeForCompareLink(boolean set) {
+		responseTooLargeForCompareLink = set;
+	}
+
+	public boolean getResponseTooLargeForCompareLink() {
+		return responseTooLargeForCompareLink;
 	}
 
 	public void testConditional() throws Exception {
@@ -215,6 +239,14 @@ public class ParsedRequest {
 		return actualVariable;
 	}
 
+	public void setActualVariable(String actual) {
+		actualVariable = actual;
+	}
+
+	public void setExpectedVariable(String expected) {
+		expectedVariable = expected;
+	}
+
 	public void setMapValue(String param) {
 		mapvalue.add(param);
 	}
@@ -245,9 +277,15 @@ public class ParsedRequest {
 		this.compare = compare;
 	}
 
+	public void setIgnore(boolean ignore) {
+		this.ignore = ignore;
+	}
+
 	public boolean getCompare() {
 		return compare;
 	}
+
+	public boolean getIgnore() {return ignore; }
 
 	public boolean getOpenBug() {
 		return openBug;
@@ -404,7 +442,7 @@ public class ParsedRequest {
 
 	public void setSQL(String SQL) throws Exception {
 		StringBuffer sb = new StringBuffer(this.SQL);
-		sb.append(SQL);
+		sb.append(InterpolateRequest.Instance.interpolateString(SQL));
 		sb.append(" ");
 		this.SQL = sb.toString();
 	}

@@ -1,6 +1,6 @@
 package com.pqi.responsecompare.request;
 
-import com.pqi.responsecompare.configuration.OracleDbManager;
+import com.pqi.responsecompare.sql.OracleDbManager;
 import com.pqi.responsecompare.configuration.PropertiesSingleton;
 import com.pqi.responsecompare.configuration.SSHTunnel;
 import org.apache.commons.io.FileUtils;
@@ -29,7 +29,7 @@ public class CreateAgnosticProperties extends Request {
 		super(test);
 	}
 
-	public void makeRequests() throws Exception {
+	public void sendRequest() throws Exception {
 
 		boolean req_result = false;
 		String fs = File.separator;
@@ -61,7 +61,7 @@ public class CreateAgnosticProperties extends Request {
 			logger.debug("Calling rs.close");
 			rs.close();
 			logger.debug("Calling db.closeStatement");
-			db.CloseStatement();
+			db.closeStatement();
 			logger.debug("Finished calling db.closeStatement");
 
 			//Any patient that has pharmacy data
@@ -76,7 +76,7 @@ public class CreateAgnosticProperties extends Request {
 				setProperty("view-pharmacies-mpi", "");
 			}
 			rs.close();
-			db.CloseStatement();
+			db.closeStatement();
 
 
 			//Any patient with allergies
@@ -103,7 +103,7 @@ public class CreateAgnosticProperties extends Request {
 				setProperty("view-allergies-mpi", "");
 			}
 			rs.close();
-			db.CloseStatement();
+			db.closeStatement();
 
 
 			//Any patient with medications
@@ -117,7 +117,7 @@ public class CreateAgnosticProperties extends Request {
 				setProperty("view-medications-mpi", "");
 			}
 			rs.close();
-			db.CloseStatement();
+			db.closeStatement();
 
 
 			//Any patient with non visit items
@@ -141,7 +141,7 @@ public class CreateAgnosticProperties extends Request {
 				setProperty("view-non-visit-items-mpi", "");
 			}
 			rs.close();
-			db.CloseStatement();
+			db.closeStatement();
 
 
 			//Any patient with diagnosis
@@ -172,7 +172,7 @@ public class CreateAgnosticProperties extends Request {
 				setProperty("view-diagnosis-mpi", "");
 			}
 			rs.close();
-			db.CloseStatement();
+			db.closeStatement();
 
 			//Any patient with immunizations
 			description = "Query for Any Patient with immunizations";
@@ -195,7 +195,7 @@ public class CreateAgnosticProperties extends Request {
 				setProperty("view-immunizations-mpi", "");
 			}
 			rs.close();
-			db.CloseStatement();
+			db.closeStatement();
 
 			description = "Query For any patient with an emergency contact";
 			logger.debug(description);
@@ -227,7 +227,7 @@ public class CreateAgnosticProperties extends Request {
 				setProperty("view-emergency-contacts-mpi", "");
 			}
 			rs.close();
-			db.CloseStatement();
+			db.closeStatement();
 
 
 			//Any patient with an insurance plan w_patient_plan aka Payors and Plans
@@ -243,7 +243,7 @@ public class CreateAgnosticProperties extends Request {
 				setProperty("view-insurance-plan-mpi", "");
 			}
 			rs.close();
-			db.CloseStatement();
+			db.closeStatement();
 
 			//Any patient with labs
 			description = "Query For Any Patient with labs";
@@ -258,7 +258,7 @@ public class CreateAgnosticProperties extends Request {
 				setProperty("view-laboratory-mpi", "");
 			}
 			rs.close();
-			db.CloseStatement();
+			db.closeStatement();
 
 			//Any patient with vitals
 			description = "Query for any patient with vitals";
@@ -274,7 +274,7 @@ public class CreateAgnosticProperties extends Request {
 				setProperty("view-vitals-mpi", "");
 			}
 			rs.close();
-			db.CloseStatement();
+			db.closeStatement();
 
 			//Any patient with diagnostic imaging
 			description = "Query for Any patient with diagnostic imaging";
@@ -295,7 +295,7 @@ public class CreateAgnosticProperties extends Request {
 				setProperty("view-radialogy-mpi", "");
 			}
 			rs.close();
-			db.CloseStatement();
+			db.closeStatement();
 
 			//Any patient with blood pressure
 			//Any patient with multigraph data - in this case diastolic
@@ -329,7 +329,7 @@ public class CreateAgnosticProperties extends Request {
 				setProperty("view-multigraph-mpi", "");
 			}
 			rs.close();
-			db.CloseStatement();
+			db.closeStatement();
 
 			//Any patient with multiple multigraph data (in this case body weight and height)
 			description = "Query for any patient with multiple multigraph data - in this case body weight and height";
@@ -386,7 +386,7 @@ public class CreateAgnosticProperties extends Request {
 				setProperty("view-multigraph-single-and-multiple-mpi", "");
 			}
 			rs.close();
-			db.CloseStatement();
+			db.closeStatement();
 
 			//consulting physician code id
 			description = "Query For consulting physician code id";
@@ -401,7 +401,7 @@ public class CreateAgnosticProperties extends Request {
 				setProperty("most-recently-viewed-codeId", "");
 			}
 			rs.close();
-			db.CloseStatement();
+			db.closeStatement();
 
 			//Any Community
 			description = "Query For Any Community";
@@ -420,7 +420,7 @@ public class CreateAgnosticProperties extends Request {
 				setProperty("view-community-manager-community-id", "");
 			}
 			rs.close();
-			db.CloseStatement();
+			db.closeStatement();
 
 			//Any organization within that Community
 			description = "Query For Any organization with that Community";
@@ -442,7 +442,7 @@ public class CreateAgnosticProperties extends Request {
 				setProperty("view-community-manager-organization-id", "");
 			}
 			rs.close();
-			db.CloseStatement();
+			db.closeStatement();
 
 			//Any Facility within that organization
 			description = "Query For Any Facility within that organization";
@@ -462,7 +462,7 @@ public class CreateAgnosticProperties extends Request {
 				setProperty("view-community-manager-facility-id", "");
 			}
 			rs.close();
-			db.CloseStatement();
+			db.closeStatement();
 
 			//Provider Role ID
 			description = "Query For the Provider Role ID";
@@ -475,7 +475,7 @@ public class CreateAgnosticProperties extends Request {
 				setProperty("provider_id", "");
 			}
 			rs.close();
-			db.CloseStatement();
+			db.closeStatement();
 
 			//Top 2 organizations with the most patients
 			description = "Query For Top 2 organizations with the most patients";
@@ -522,7 +522,7 @@ public class CreateAgnosticProperties extends Request {
 				}
 			}
 			rs.close();
-			db.CloseStatement();
+			db.closeStatement();
 
 			//Get NHS number from most used organization
 			description = "Query for getting NHS Number";
@@ -584,7 +584,7 @@ public class CreateAgnosticProperties extends Request {
 				setProperty("provider_from_orgID2", "");
 			}
 			rs.close();
-			db.CloseStatement();
+			db.closeStatement();
 
 			//Get a Patient to Search on
 			description = "Query for getting a patient to search on";
@@ -600,7 +600,7 @@ public class CreateAgnosticProperties extends Request {
 				setProperty("last_name_search", "");
 			}
 			rs.close();
-			db.CloseStatement();
+			db.closeStatement();
 
 			//Get a Patient with Sensitive Data
 			description = "Query for getting a patient with sensitive data";
@@ -620,7 +620,7 @@ public class CreateAgnosticProperties extends Request {
 				setProperty("sensitive_mpi", "");
 			}
 			rs.close();
-			db.CloseStatement();
+			db.closeStatement();
 
 			FileOutputStream io = FileUtils.openOutputStream(new File("properties/environmentagnostic.properties"));
 			PrintWriter pw = new PrintWriter(io);
@@ -633,7 +633,7 @@ public class CreateAgnosticProperties extends Request {
 
 		} finally {
 			endCreateHTML();
-			db.CloseStatement();
+			db.closeStatement();
 			db.closeConnection();
 			SSHTunnel.Instance.closeTunnel();
 		}

@@ -21,7 +21,7 @@ public class GetMRN extends Request {
 		super();
 	}
 
-	public void makeRequests() {
+	public void sendRequest() {
 	};
 
 	public void makeRequests(String firstname, String lastname, String gender,

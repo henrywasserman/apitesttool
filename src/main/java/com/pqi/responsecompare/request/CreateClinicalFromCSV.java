@@ -22,7 +22,7 @@ public class CreateClinicalFromCSV extends Request {
 		super(test);
 	}
 
-	public void makeRequests() {
+	public void sendRequest() {
 	};
 
 	public void makeRequests(ArrayList<String> headers, String line,

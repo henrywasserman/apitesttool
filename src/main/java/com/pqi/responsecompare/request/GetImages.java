@@ -10,8 +10,8 @@ public class GetImages extends Get {
 		super(test);
 	}
 
-	public void makeRequests() throws Exception {	
-		super.makeRequests();
+	public void sendRequest() throws Exception {
+		super.sendRequest();
 		getImages();
 	}
 }

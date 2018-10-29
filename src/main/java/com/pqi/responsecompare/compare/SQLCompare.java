@@ -1,22 +1,14 @@
 package com.pqi.responsecompare.compare;
 
-import com.pqi.responsecompare.configuration.PropertiesSingleton;
+import com.pqi.responsecompare.reports.CreateOutput;
 import com.pqi.responsecompare.configuration.Utilities;
 import com.pqi.responsecompare.request.TestCase;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.custommonkey.xmlunit.DetailedDiff;
 import org.custommonkey.xmlunit.Diff;
-import org.custommonkey.xmlunit.Transform;
-import org.custommonkey.xmlunit.XMLUnit;
 import org.skyscreamer.jsonassert.JSONAssert;
 import org.w3c.dom.Document;
-import org.xml.sax.SAXParseException;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
-import java.io.IOException;
+import org.junit.Assert;
 
 public class SQLCompare extends Compare {
 
@@ -48,10 +40,6 @@ public class SQLCompare extends Compare {
 
 	}
 
-	public void testMyTest() {
-
-	}
-
 	public SQLCompare(String testMethodName) {
 		super(testMethodName);
 	}
@@ -67,9 +55,11 @@ public class SQLCompare extends Compare {
 			String sqlReqNum = Integer.toString(test.getTestRequestCounter());
 			String responseFileString = pathGenerator.getResponseFile() + ".json";
 			String expectedFileString = pathGenerator.getExpected() + "_" + sqlReqNum + ".json";
+			String expectedHTMLFileString = pathGenerator.getExpected() + "_" + sqlReqNum + ".html";
 
 			File responseFile =  new File(responseFileString);
 			File expectedFile = new File (expectedFileString);
+			File expectedHTMLFile = new File (expectedHTMLFileString);
 
 			//Make sure that all of the files we are working with exist
 			Utilities.Instance.fileChecker(responseFileString);
@@ -78,7 +68,21 @@ public class SQLCompare extends Compare {
 			response = FileUtils.readFileToString(responseFile);
 			expected = FileUtils.readFileToString(expectedFile);
 
+			String html = "";
+			TODO: Make sure this does not happen for SQL Requests
+			if (expectedHTMLFile.length() == 0) {
+				html = CreateOutput.Instance.returnEmptyJsonStringHTML();
+			} else {
+				html = CreateOutput.Instance.JSONToHTML(expected, test);
+			}
+			FileUtils.writeStringToFile(expectedHTMLFile,html);
+
+			if (expected.isEmpty()) {
+				Assert.fail("Expected json data has not been created yet.");
+			}
+
 			JSONAssert.assertEquals(expected, response, false);
+
 
 		} catch (Exception e) {
 			e.printStackTrace();

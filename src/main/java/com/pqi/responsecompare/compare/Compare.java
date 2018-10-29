@@ -3,7 +3,6 @@ package com.pqi.responsecompare.compare;
 import org.custommonkey.xmlunit.XMLTestCase;
 
 import com.pqi.responsecompare.configuration.PathGenerator;
-import com.pqi.responsecompare.configuration.Utilities;
 import com.pqi.responsecompare.request.TestCase;
 
 public abstract class Compare extends XMLTestCase {

@@ -1,6 +1,7 @@
 package com.pqi.responsecompare.request;
 
 import com.pqi.responsecompare.ICD9.VerifyICD;
+import com.pqi.responsecompare.edi.EdiToTalend;
 
 public enum RequestFactory {
 
@@ -27,6 +28,8 @@ public enum RequestFactory {
 			req = new CreateJSONRole(test);
 		} else if (type.equals("create_agnostic_properties")) {
 			req = new CreateAgnosticProperties(test);
+		} else if (type.equals("edi_to_talend")) {
+			req = new EdiToTalend(test);
 		} else if (type.equals("get")) {
 			req = new Get(test);
 		} else if (type.equals("delete")) {
@@ -43,8 +46,16 @@ public enum RequestFactory {
 			req = new RemoteShell(test);
 		} else if (type.equals("run_oracle_sql")) {
 			req = new RunOracleSQL(test);
+		} else if (type.equals("run_pl_sql")) {
+			req = new RunPLSQL(test);
 		} else if (type.equals("run_sqlserver_sql")) {
 			req = new RunSQLServerSQL(test);
+		} else if (type.equals("run_sqlserver_execute_sql")) {
+			req = new RunSQLServerExecute(test);
+		} else if (type.equals("run_oracleserver_execute_sql")) {
+			req = new RunOracleServerExecute(test);
+		} else if (type.equals("run_teradata_execute_sql")) {
+			req = new RunTeradataExecute(test);
 		} else if (type.equals("run_sql_from_file")) {
 			req = new RunSQLFromFile(test);
 //		} else if (type.toLowerCase().equals("sample_keyword")) {

@@ -19,7 +19,7 @@ public class Delete extends Request {
 		super(test);
 	}
 
-	public void makeRequests() throws Exception {
+	public void sendRequest() throws Exception {
 		CloseableHttpResponse response = null;
 		
 		post = new StringBuffer(builddir.toString());

@@ -1,8 +1,8 @@
 package com.pqi.responsecompare.request;
 
-import com.pqi.responsecompare.configuration.OracleDbManager;
 import com.pqi.responsecompare.configuration.SSHTunnel;
 import com.pqi.responsecompare.json.JSONToMap;
+import com.pqi.responsecompare.sql.OracleDbManager;
 import org.apache.log4j.Logger;
 
 import java.sql.ResultSet;
@@ -18,7 +18,7 @@ public class GetConfirmationToken extends Request {
 	}
 
 	@Override
-	public void makeRequests() throws Exception  {
+	public void sendRequest() throws Exception  {
 		OracleDbManager dbManager = null;
 		ResultSet rs = null;
 		String result = "";

@@ -2,7 +2,8 @@ package com.pqi.responsecompare.request;
 
 import com.pqi.responsecompare.compare.CompareResults;
 import com.pqi.responsecompare.configuration.Utilities;
-import junit.framework.Assert;
+import com.pqi.responsecompare.sql.SQLToMap;
+import org.junit.Assert;
 import junit.framework.AssertionFailedError;
 import junit.framework.Test;
 import junit.framework.TestSuite;
@@ -113,35 +114,38 @@ public class TestMakeRequest extends junit.framework.TestCase {
 	}
 	
 	public void MakeRequest() throws Exception {
-		for (ParsedRequest request:testcaseList.get(testNumber).getRequests()) {
+		for (ParsedRequest request : testcaseList.get(testNumber).getRequests()) {
 			try {
 				testcaseList.get(testNumber).incrementTestRequestCounter();
 				req = RequestFactory.Instance.getRequest(testcaseList.get(testNumber));
 				this.setName(testcaseList.get(testNumber).getTestCaseID() + ": \n" +
 						testcaseList.get(testNumber).getTestCaseDescription());
-				req.makeRequests();
+
+				req.sendRequest();
 				req.getTest().setComparisonType();
-			
+
 				if (!req.getTest().getCompare()) {
 					new CompareResults(req.getTest());
 				}
-			
-			} catch (AssertionFailedError aex){
+
+			} catch (AssertionFailedError aex) {
 				// process all the junit assertions here;
 				req.getTest().saveRequestURLs();
 				logger.error(aex.getMessage());
-				Assert.fail(req.getPathGenerator().getResponseFile()+ ".xml" + "***"+aex.getMessage());
+				Assert.fail(req.getPathGenerator().getResponseFile() + ".xml" + "***" + aex.getMessage());
 			} catch (java.lang.Exception e) {
 				req.getTest().saveRequestURLs();
 				results = req.getPathGenerator().getResponseFile() +
-						".xml" +"***"+"TestID: " + req.getTest().getTestCaseID()+ " failed: " +
-						"\n "+e.getMessage()+"\n "+StringUtils.join(e.getStackTrace()).substring(0,512);
-				logger.info("TestID: " + req.getTest().getTestCaseID()+ " failed: " + StringUtils.join(
-					e.getStackTrace()).substring(0,512));
+						".xml" + "***" + "TestID: " + req.getTest().getTestCaseID() + " failed: " +
+						"\n " + e.getMessage() + "\n " + StringUtils.join(e.getStackTrace()).substring(0, 512);
+				logger.info("TestID: " + req.getTest().getTestCaseID() + " failed: " + StringUtils.join(
+						e.getStackTrace()).substring(0, 512));
 				e.printStackTrace();
 				Assert.fail(results);
-				
+
 			}
 		}
+		SQLToMap.Instance.cleanSQLMap();
+		SQLToMap.Instance.cleanSQLMapArray();
 	}
 }

@@ -30,8 +30,8 @@ public class GetWapiImage extends Get {
 	}
 
 	@Override
-	public void makeRequests() throws Exception {
-		super.makeRequests();
+	public void sendRequest() throws Exception {
+		super.sendRequest();
 
 		if (test.getRequests().size() == 2) {
 			String url2 = test.getRequests().get(1).getURL();

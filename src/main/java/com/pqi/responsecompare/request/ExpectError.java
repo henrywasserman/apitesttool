@@ -25,7 +25,7 @@ public class ExpectError extends Request {
 	  super();
   }
   
-  public void makeRequests() throws Exception {
+  public void sendRequest() throws Exception {
 
 		post = new StringBuffer(builddir.toString());
 		post.append(file);

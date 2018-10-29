@@ -75,8 +75,8 @@ public class VariableCompare extends Compare {
 
 				StringBuffer results = new StringBuffer();
 
-				String actualResults = test.getRequests().get(test.getTestRequestCounter()).getActualVariable();
-				String expectedResults = test.getRequests().get(test.getTestRequestCounter()).getExpectedVariable();
+				String actualResults = test.getCurrentParsedRequest().getActualVariable();
+				String expectedResults = test.getCurrentParsedRequest().getExpectedVariable();
 
 				String actualResultsValue = JSONToMap.Instance.getMap().get(actualResults).toString();
 				String expectedResultsValue = JSONToMap.Instance.getMap().get(expectedResults).toString();

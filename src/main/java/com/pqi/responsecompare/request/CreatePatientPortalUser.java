@@ -23,7 +23,7 @@ public class CreatePatientPortalUser extends Request {
 		super(test);
 	}
 
-	public void makeRequests() throws Exception {
+	public void sendRequest() throws Exception {
 
 		CloseableHttpResponse response = null;
 		

@@ -20,7 +20,7 @@ public class CreateJSONRole extends Request {
 		super(test);
 	}
 
-	public void makeRequests() throws Exception {
+	public void sendRequest() throws Exception {
 
 		HashMap<String,String> featureAction = new HashMap<String,String>();
 

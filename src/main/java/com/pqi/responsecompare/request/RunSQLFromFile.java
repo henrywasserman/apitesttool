@@ -1,6 +1,6 @@
 package com.pqi.responsecompare.request;
 
-import com.pqi.responsecompare.configuration.OracleDbManager;
+import com.pqi.responsecompare.sql.OracleDbManager;
 import com.pqi.responsecompare.configuration.PropertiesSingleton;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
@@ -31,7 +31,7 @@ public class RunSQLFromFile extends Request {
 		super(test);
 	}
 
-	public void makeRequests() throws Exception {
+	public void sendRequest() throws Exception {
 		File sqlFile = new File(test.getRequests().get(test_request_counter).getURL());
 		boolean req_result = false;
 		String fs = File.separator;
@@ -56,7 +56,7 @@ public class RunSQLFromFile extends Request {
 			logger.debug("Calling rs.close");
 			rs.close();
 			logger.debug("Calling db.closeStatement");
-			db.CloseStatement();
+			db.closeStatement();
 			logger.debug("Finished calling db.closeStatement");
 
 
@@ -64,7 +64,7 @@ public class RunSQLFromFile extends Request {
 			throw e;
 
 		} finally {
-			db.CloseStatement();
+			db.closeStatement();
 			db.closeConnection();
 			//SSHTunnel.Instance.closeTunnel();
 		}

@@ -17,7 +17,7 @@ public class AddRoleToUserFromCSV extends Request {
 		super(test);
 	}
 
-	public void makeRequests() throws Exception {
+	public void sendRequest() throws Exception {
 
 		CloseableHttpResponse response = null;
 		post = new StringBuffer(builddir.toString());
@@ -54,7 +54,7 @@ public class AddRoleToUserFromCSV extends Request {
 
 					test.getRequests().get(0).setHeader("username:" + creds[0]);
 					test.getRequests().get(0).setHeader("password:" + creds[1]);
-					sslpost.makeRequests();
+					sslpost.sendRequest();
 
 					AddRoleToPrincipalFromCSV req = new AddRoleToPrincipalFromCSV(test);
 					

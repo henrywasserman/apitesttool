@@ -53,16 +53,16 @@ public enum  HandleJSONRequest {
 				//JSONToMap.Instance.combineMaps(variable_map);
 				logger.debug(jsonString);
 
-				variableHash = test.getRequests().get(test.getTestRequestCounter()).getVariableHash();
+				variableHash = test.getCurrentParsedRequest().getVariableHash();
 				if (!variableHash.isEmpty())
 				{
 					SetCustomJSONMap.Instance
 						.setCustomVariables(variableHash);
 				}
 
-				if (!test.getRequests().get(test.getTestRequestCounter()).getMailBoxFolderName().isEmpty()) {
+				if (!test.getCurrentParsedRequest().getMailBoxFolderName().isEmpty()) {
 					logger.info("Adding mailboxfolderid");
-					String foldername = test.getRequests().get(test.getTestRequestCounter()).getMailBoxFolderName();
+					String foldername = test.getCurrentParsedRequest().getMailBoxFolderName();
 					SetCustomJSONMap.Instance.setMailBoxFolderId(foldername, outputfile.toString());
 				}
 

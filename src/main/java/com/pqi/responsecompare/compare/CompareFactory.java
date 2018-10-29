@@ -21,6 +21,8 @@ public enum CompareFactory {
 			compare = new MapValueCompare(test);
 		} else if (test.getComparisonType().equals("variables")) {
 			compare = new VariableCompare(test);
+		} else if (test.getComparisonType().equals("sql_statements")) {
+			compare = new SQLStatementsCompare(test);
 		}
 
 		return compare;

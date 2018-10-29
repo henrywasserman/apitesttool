@@ -1,7 +1,7 @@
 package com.pqi.responsecompare.ICD9;
 
-import com.pqi.responsecompare.configuration.OracleDbManager;
 import com.pqi.responsecompare.configuration.PropertiesSingleton;
+import com.pqi.responsecompare.sql.OracleDbManager;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
@@ -96,7 +96,7 @@ public class ICDThread implements Runnable
                     errorList.add(query + "\nMNEMONIC " + ICDCode
                         + " does not exist in the P_CODE Table or CODE_ID does not contain MNEMONIC or CODE_SET_ID is not set to -2001 or authority is not ICD9");
                     rs.close();
-                    db.CloseStatement();
+                    db.closeStatement();
 
                 }
                 else
@@ -104,7 +104,7 @@ public class ICDThread implements Runnable
                     CODE_ID = rs.getString("CODE_ID");
                     CODE_SET_ID = rs.getString("CODE_SET_ID");
                     rs.close();
-                    //db.CloseStatement();
+                    //db.closeStatement();
                     unique_query = "SELECT COUNT(*) FROM P_CODE WHERE MNEMONIC = '" + ICDCode
                         + "' AND DELETE_IND = 0 and AUTHORITY_ID = 'ICD-9'";
                     runQuery(unique_query);
@@ -113,7 +113,7 @@ public class ICDThread implements Runnable
                         errorList.add(query + "\nThere are duplicate ICD-9 mnemonics in the P_CODE table");
                     }
                     rs.close();
-                    //db.CloseStatement();
+                    //db.closeStatement();
                     chronic_query = "SELECT * FROM P_CODE_CHRONIC_INDICATOR WHERE CODE_ID = '" + CODE_ID + "'";
                     //logger.debug("chronic_query: " + chronic_query);
                     runQuery(chronic_query);
@@ -144,10 +144,10 @@ public class ICDThread implements Runnable
                         finalResult = false;
                     }
                     rs.close();
-                    //db.CloseStatement();
+                    //db.closeStatement();
                 }
                 rs.close();
-                db.CloseStatement();
+                db.closeStatement();
                 chronic_query = "";
                 pcode_query = "";
                 CODE_ID = "";

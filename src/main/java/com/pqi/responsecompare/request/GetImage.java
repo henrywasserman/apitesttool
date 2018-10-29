@@ -35,7 +35,7 @@ public class GetImage extends Request {
 	 * with a get followed by a get_images We should refactor this later on to
 	 * be more flexible
 	 */
-	public void makeRequests() throws Exception {
+	public void sendRequest() throws Exception {
 		HttpClient httpclient = HttpClientBuilder.create().build();
 		String getImageUrl = "";
 		String infoUrl = "";

@@ -1,12 +1,11 @@
 package com.pqi.responsecompare.request;
 
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Properties;
 
-import com.pqi.responsecompare.configuration.OracleDbManager;
+import com.pqi.responsecompare.sql.OracleDbManager;
 import com.pqi.responsecompare.sql.SQLToMap;
 import org.junit.Assert;
 
@@ -23,7 +22,7 @@ public class RunOracleSQL extends Request {
 	}
 
 	@Override
-	public void makeRequests() throws Exception  {
+	public void sendRequest() throws Exception  {
 		OracleDbManager dbManager = null;
 		java.sql.Timestamp ts = null; 
 		try{
@@ -56,6 +55,11 @@ public class RunOracleSQL extends Request {
 		logger.info(sql);
 		resultSet = dbManager.executeQuery(sql);
 		SQLToMap.Instance.appendMap(resultSet);
+		dbManager.closeStatement();
+		dbManager.closeConnection();
+		setupAndOutput(SQLToMap.Instance.getSQLHtml(test.getTestRequestCounter()),".html");
+		setupAndOutput(SQLToMap.Instance.getSqlJSON(test.getTestRequestCounter()), ".json");
+
 		/*
 		ResultSetMetaData rsmd = resultSet.getMetaData();
 		int numberOfColumns = rsmd.getColumnCount();

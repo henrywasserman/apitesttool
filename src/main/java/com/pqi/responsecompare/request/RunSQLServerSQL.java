@@ -1,8 +1,7 @@
 package com.pqi.responsecompare.request;
 
-import com.pqi.responsecompare.configuration.DatabaseManager;
-import com.pqi.responsecompare.configuration.OracleDbManager;
-import com.pqi.responsecompare.configuration.SqlServerDbManager;
+import com.pqi.responsecompare.sql.DatabaseManager;
+import com.pqi.responsecompare.sql.SqlServerDbManager;
 import com.pqi.responsecompare.configuration.Utilities;
 import com.pqi.responsecompare.sql.SQLToMap;
 import org.apache.http.HttpResponse;
@@ -23,7 +22,7 @@ public class RunSQLServerSQL extends Request {
 	}
 
 	@Override
-	public void makeRequests() throws Exception  {
+	public void sendRequest() throws Exception  {
 		SqlServerDbManager dbManager = null;
 		java.sql.Timestamp ts = null; 
 		try{
@@ -36,7 +35,7 @@ public class RunSQLServerSQL extends Request {
 		     Assert.fail("Could not obtain database connection "+ ex.getMessage()); 
           }
 		this.executeAndValidateSql(ts, dbManager);
-		dbManager.closeConnection();
+		//dbManager.closeConnection();
 	}
 
 	/**
@@ -56,7 +55,8 @@ public class RunSQLServerSQL extends Request {
 		logger.info(sql);
 		resultSet = dbManager.executeQuery(sql);
 		SQLToMap.Instance.appendMap(resultSet);
-		setupAndOutput(SQLToMap.Instance.getSQLHtml(Integer.valueOf(test_request_counter)),".html");
-		setupAndOutput(SQLToMap.Instance.getSqlJSON(Integer.valueOf(test_request_counter)), ".json");
+
+		setupAndOutput(SQLToMap.Instance.getSQLHtml(test.getTestRequestCounter()),".html");
+		setupAndOutput(SQLToMap.Instance.getSqlJSON(test.getTestRequestCounter()), ".json");
 	}
 }

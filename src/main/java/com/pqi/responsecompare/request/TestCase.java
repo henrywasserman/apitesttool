@@ -16,7 +16,7 @@ public class TestCase {
 	
 	private String testCaseID="", testCaseDescription="";
 	private int lineNum;
-	private List<ParsedRequest> requests = null;
+	private List<ParsedRequest> requests;
 	private int test_request_counter = -1;
 	private int reqcounter = -1;
 	private String comparisonType = "";
@@ -50,6 +50,7 @@ public class TestCase {
 		commands.put("CREATE_USERS", "");
 		commands.put("CREATE_AGNOSTIC_PROPERTIES", "");
 		commands.put("CREATE_JSON_FOR_ROLE", "");
+		commands.put("EDI_TO_TALEND","");
 		commands.put("REMOTE_SHELL", "");
 		commands.put("DELETE", "");
 		commands.put("LOG", "");
@@ -70,7 +71,12 @@ public class TestCase {
 		commands.put("PUT","");
 		commands.put("RUN_SQL_FROM_FILE","");
 		commands.put("RUN_ORACLE_SQL","");
+		commands.put("RUN_PL_SQL","");
 		commands.put("RUN_SQLSERVER_SQL","");
+		commands.put("RUN_SQLSERVER_EXECUTE_SQL","");
+		commands.put("RUN_TERADATA_EXECUTE_SQL","");
+		commands.put("RUN_ORACLESERVER_EXECUTE_SQL","");
+
 	}
 
 	public TestCase() {
@@ -159,14 +165,16 @@ public class TestCase {
 	}
 	
 	public void addCommand(String command, String param) throws Exception {
+
 		if (commands.containsKey(command)) {
-          addParsedRequest(command, param);
+			addParsedRequest(command, param);
 		}
-		else if (command.equals("ELSE")) {
+
+		else if (command.equals("ELSE") && isAppend == false) {
 			setIsIF(false);
 			setIsELSE(true);
 		}
-		else if (command.equals("IF")) {
+		else if (command.equals("IF") && isAppend == false) {
 		  setIsIF(true);
 		  setIsELSE(false);
 		  setIfCondition(param);
@@ -182,18 +190,18 @@ public class TestCase {
 			addParsedRequest(command, param);
 			requests.get(reqcounter).setICDFile(param);
 		}
-		else if (isAssign == true || command.equals("ASSIGN")) {
+		else if (isAssign || command.equals("ASSIGN")) {
 			isAssign = true;
 			requests.get(reqcounter).setVariable(param);
 			if (requests.get(reqcounter).getAssign() == null) {
 				isAssign = false;
 			}
 		}
-		else if (isBody == true || command.equals("BODY")) {
+		else if (isBody || command.equals("BODY")) {
 			isBody = true;
 			requests.get(reqcounter).setBody(param);
 		}
-		else if (isSQL == true || command.matches("RUN_.*_SQL")) {
+		else if (isSQL || command.matches("RUN_.*_SQL")) {
             isSQL = true;
             isAppend = true;
             if (ValidCommands.Instance.getAllValidCommands().contains(param)) {
@@ -260,7 +268,15 @@ public class TestCase {
 		}
 		else if (command.equals("COMPARE")) {
 			requests.get(requests.size() -1 ).setCompare(true);
+			if (!param.isEmpty()) {
+				requests.get(requests.size() - 1).setCompareString(param);
+			}
 		}
+		else if (command.equals("IGNORE")) {
+			requests.get(requests.size() -1).setIgnore(true);
+			requests.get(requests.size() -1).setIgnoreString(param);
+		}
+
 		else if (command.equals("SET_DATETIME")) {
 			requests.get(reqcounter).setDateTime(param);
 		}
@@ -283,6 +299,14 @@ public class TestCase {
 			requests.get(requests.size() -1).setCompare(true);
 			comparisonType = "variables";
 		}
+		else if (command.equals("COMPARE_TWO_SQL_STATEMENTS")) {
+			requests.get(requests.size() -1).setCompare(true);
+			comparisonType = "sql_statements";
+			if (!param.isEmpty()) {
+				requests.get(requests.size() - 1).setExpectedVariable(param.split(",")[0].trim());
+				requests.get(requests.size() - 1).setActualVariable(param.split(",")[1].trim());
+			}
+		}
 		else if (command.equals("VERIFY_MAP_VALUE")) {
 			requests.get(reqcounter).setMapValue(param);
 			requests.get(requests.size() -1 ).setCompare(true);
@@ -304,6 +328,10 @@ public class TestCase {
 		return requests;
 	}
 
+	public ParsedRequest getCurrentParsedRequest() {
+		return requests.get(test_request_counter);
+	}
+
 	public int getLineNum() {
 		return lineNum;
 	}
@@ -312,13 +340,14 @@ public class TestCase {
 		this.lineNum = lineNum;
 	}
 
-	public void saveRequestURLs() {
+	public void saveRequestURLs ()  {
 		String requestdir = Utilities.Instance.getResponseCompareRoot() +
 			File.separator + "data" + File.separator +
-			"consult" + File.separator + "request" +
+			"consult" + File.separator + PropertiesSingleton.Instance.getProperty("test.dir") +
+				File.separator + "request" +
 			File.separator;
-		
-		String requestr= "<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=ISO-8859-1\">" +
+		String requestTestFile = new File(requestfile).getName();
+		StringBuffer requestr = new StringBuffer("<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=ISO-8859-1\">" +
 							"<title>Response Compare Tester</title></head><body><DL>" +
 
                             "<style>" +
@@ -345,6 +374,11 @@ public class TestCase {
                             "transform: translateY(4px);" +
                             "}" +
                             "</style>" +
+                            "<style>" +
+                                ".align { text-align: center; vertical-align: text-top;" +
+                                "}" +
+                            "</style>" +
+
 
                             "<script type=\"text/javascript\" src=\"https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js\"></script>" +
 							"<script type=\"text/javascript\">" +
@@ -423,8 +457,9 @@ public class TestCase {
 		return testCaseDescription;
 	}
 
-	public void setTestCaseDescription(String testCaseDescription) {
-		this.testCaseDescription = testCaseDescription;
+	public void setTestCaseDescription(String testCaseDescription) throws Exception {
+		this.testCaseDescription =
+			InterpolateRequest.Instance.interpolateString(testCaseDescription);
 	}
 	
 	public boolean getCompare() {
@@ -447,8 +482,15 @@ public class TestCase {
 	public void setComparisonType() {
 		String lastRequest = requests.get(requests.size() - 1).getRequestType();
 		if (lastRequest.toLowerCase().contains("image")) {
-            comparisonType = "image";
-        } else if (lastRequest.toLowerCase().contains("sql")) {
+			comparisonType = "image";
+		} else if (lastRequest.toLowerCase().equals("run_sqlserver_execute_sql")
+			&& comparisonType.isEmpty()) {
+			comparisonType = "sql_statements";
+		} else if (lastRequest.toLowerCase().equals("run_oracleserver_execute_sql")
+			&& comparisonType.isEmpty()) {
+			comparisonType = "sql_statements";
+        } else if (lastRequest.toLowerCase().contains("sql")
+				&& comparisonType.isEmpty()) {
             comparisonType = "sql";
 		} else if (comparisonType.isEmpty()) {
             comparisonType = "xml";

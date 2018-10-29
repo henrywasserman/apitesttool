@@ -73,7 +73,7 @@ public class TextCompare extends Compare {
 
 				StringBuffer results = new StringBuffer();
 
-				ArrayList<String> stringArray = test.getRequests().get(test.getTestRequestCounter()).getResponseText();
+				ArrayList<String> stringArray = test.getCurrentParsedRequest().getResponseText();
 
 				for (String response:stringArray)
 				{

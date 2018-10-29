@@ -16,7 +16,7 @@ import com.pqi.responsecompare.json.HandleJSONRequest;
 public class GetListJason extends Request {
 
 	@Override
-	public void makeRequests() throws Exception {
+	public void sendRequest() throws Exception {
 		HttpClient httpclient = HttpClientBuilder.create().build();
 	    
 	    url = url + "http://"+test.getRequests().get(0).getURL().trim();

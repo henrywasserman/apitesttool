@@ -67,7 +67,7 @@ public class MapValueCompare extends Compare {
 
 				StringBuffer results = new StringBuffer();
 
-				ArrayList<String> mapValues = test.getRequests().get(test.getTestRequestCounter()).getMapValue();
+				ArrayList<String> mapValues = test.getCurrentParsedRequest().getMapValue();
 
 				for (String testString : mapValues)
 				{

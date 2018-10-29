@@ -10,8 +10,8 @@ public class PostImages extends Post {
 		super(test);
 	}
 
-	public void makeRequests() throws Exception {	
-		super.makeRequests();
+	public void sendRequest() throws Exception {
+		super.sendRequest();
 		
 		getImages();
 	}

@@ -10,7 +10,7 @@ public class Log extends Request {
 	}
 
 
-	public void makeRequests() throws Exception
+	public void sendRequest() throws Exception
 	{
 		log = InterpolateRequest.Instance.interpolateString(log);
 		logger.info(log);

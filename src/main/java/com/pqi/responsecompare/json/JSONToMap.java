@@ -2,6 +2,7 @@ package com.pqi.responsecompare.json;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.pqi.responsecompare.configuration.PropertiesSingleton;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import java.net.URLEncoder;
@@ -24,6 +25,24 @@ public enum JSONToMap {
 		combineMaps(new HashMap<String,Object>((Map)responseCompare));
 
 		testrail_map = new HashMap<String,Integer>();
+	}
+
+	public void addSystemPropertiesToMap() {
+		if (System.getProperty("SIMPLE_NAME_IDS") == null) {
+			String nameIDS = System.getProperty("NAME_IDS");
+			nameIDS = "'" + nameIDS + "'";
+			nameIDS = StringUtils.replace(nameIDS,",","','");
+			System.setProperty("SIMPLE_NAME_IDS",nameIDS);
+		}
+		if (System.getProperty("NAME_IDS") != null) {
+			String nameIDS = System.getProperty("NAME_IDS");
+			if (!nameIDS.contains("'")) {
+				nameIDS = "'||'''" + nameIDS + "'''||'";
+				nameIDS = StringUtils.replace(nameIDS, ",", "'''||','||'''");
+				System.setProperty("NAME_IDS", nameIDS);
+			}
+		}
+		combineMaps(new HashMap<String,Object>((Map)System.getProperties()));
 	}
 
 

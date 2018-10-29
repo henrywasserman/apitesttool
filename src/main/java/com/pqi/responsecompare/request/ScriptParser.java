@@ -67,7 +67,8 @@ public class ScriptParser {
 						append = false;
 					} else if (currentTestCase.getIsJSONAssign()) {
 						append = true;
-					} else if (ValidCommands.Instance.getAllValidCommands().contains(line)) {
+					} else if (ValidCommands.Instance.getAllValidCommands()
+							.contains(line.split(" " )[0])) {
 						append = false;
 					} else if (currentTestCase.getIsAppend()) {
 						append = true;
@@ -78,10 +79,15 @@ public class ScriptParser {
 					if (line.contains("TESTCASE")) {
 						append = false;
 					}
-					
-					if (line.startsWith("#") || line.equals(""))
+
+					if (line.startsWith("#") || line.equals("") || line.trim().startsWith("--"))
 					{
 						continue; // Skip comments and blanks
+					}
+
+					if (line.contains("--")) {
+						logger.info(line);
+						line = line.split("--")[0];
 					}
 
 					if (PropertiesSingleton.Instance.getProperty("user.hasmail").equals("false") && line.contains("mailboxes")) {

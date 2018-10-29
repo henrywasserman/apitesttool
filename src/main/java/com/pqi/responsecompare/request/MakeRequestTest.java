@@ -3,6 +3,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
+import com.pqi.responsecompare.json.JSONToMap;
 import com.pqi.responsecompare.sql.SQLToMap;
 import org.junit.Assert;
 
@@ -60,6 +61,7 @@ public class MakeRequestTest extends junit.framework.TestCase {
 		TestSuite suite = new TestSuite();
 		String testname = "";
         String responseCompareRoot = Utilities.Instance.getResponseCompareRoot();
+		JSONToMap.Instance.addSystemPropertiesToMap();
         logger.info("Here is responseCompareRoot: " + responseCompareRoot);
         datadir = new StringBuffer(responseCompareRoot + 
 				File.separator + "data");
@@ -72,7 +74,7 @@ public class MakeRequestTest extends junit.framework.TestCase {
 		if (System.getProperty("test.dir") == null ) {
 			logger.info("test.dir is null");
 		} else if (!System.getProperty("test.dir").isEmpty()) {
-			//requestFile.append(File.separator + System.getProperty("test.dir"));
+			requestFile.append(File.separator + System.getProperty("test.dir"));
 		}
 		
 		logger.info("Here is requestfile: " + requestFile);
@@ -101,7 +103,7 @@ public class MakeRequestTest extends junit.framework.TestCase {
 									System.getProperty("tc")))
 						suite.addTest((Test) new MakeRequestTest("MakeRequest",i));
 				}
-				else if (System.getProperty("tc") != null 
+				else if (System.getProperty("tc") != null
 						&& !System.getProperty("tc").toLowerCase().equals("none")) {
 					if (testname.equals(
 						System.getProperty("tc"))) {
@@ -139,49 +141,93 @@ public class MakeRequestTest extends junit.framework.TestCase {
 	}
 	
 	public void MakeRequest() throws Exception {
+		int totalRequests = testcaseList.get(testNumber).getRequests().size();
+		int requestTestNumber = 1;
+		TestCase test = null;
+		String testOutputFile = "";
+		String expectedVariable = "";
+		boolean toDisableCompare = false;
+		String disableCompare = "";
 		for (ParsedRequest request:testcaseList.get(testNumber).getRequests()) {
 			try {
 				testcaseList.get(testNumber).incrementTestRequestCounter();
-				if (request.getURL().contains("https")) {
-					req = SSLRequestFactory.Instance.getRequest(testcaseList.get(testNumber));
-				}
-				else {
-					req = RequestFactory.Instance.getRequest(testcaseList.get(testNumber));
-				}
+				req = RequestFactory.Instance.getRequest(testcaseList.get(testNumber));
+				test = req.getTest();
 				this.setName(testcaseList.get(testNumber).getTestCaseID() + ": \n" +
 					testcaseList.get(testNumber).getTestCaseDescription());
-				SplunkManager.Instance.getLastEventTime();
-				SQLToMap.Instance.cleanSQLMap();
-				SQLToMap.Instance.cleanSQLMapArray();
-				req.makeRequests();
-				req.getTest().setComparisonType();
-			
-				//if (!req.getTest().getRequests().get(req.getTest().getTestRequestCounter()).get.getCompare()) {
-				if (req.getTest().getRequests().get(req.getTest().getTestRequestCounter()).getCompare()) {
-					new CompareResults(req.getTest());
+				//SplunkManager.Instance.getLastEventTime();
+				req.sendRequest();
+
+                if (requestTestNumber == totalRequests) {
+                    SQLToMap.Instance.cleanSQLMapArray();
+                } else {
+                    requestTestNumber++;
+                }
+
+				test.setComparisonType();
+                expectedVariable = test.getRequests()
+						.get(test.getTestRequestCounter()).getExpectedVariable();
+
+				if (test.getCurrentParsedRequest().getCompare()) {
+					new CompareResults(test);
 				}
-			
-			} catch (AssertionFailedError aex){
+
+            } catch (AssertionFailedError aex){
+				testOutputFile = req.getPathGenerator().getResponseFile();
+				testOutputFile = fixTestOutput(testOutputFile,expectedVariable);
 				// process all the junit assertions here;
-				req.getTest().saveRequestURLs();
+				test.saveRequestURLs();
 				logger.error(aex.getMessage());
-				Assert.fail(req.getPathGenerator().getResponseFile()+ ".xml" + "***"+aex.getMessage());
+				Assert.fail(testOutputFile + ".xml " + disableCompare + "***"+aex.getMessage());
 			} catch (java.lang.AssertionError ae) {
-				req.getTest().saveRequestURLs();
+				disableCompare = enableOrDisableCompare(test);
+				testOutputFile = req.getPathGenerator().getResponseFile();
+				testOutputFile = fixTestOutput(testOutputFile,expectedVariable);
+				test.saveRequestURLs();
 				logger.error(ae.getMessage());
-				Assert.fail(req.getPathGenerator().getResponseFile()+ ".xml" + "***"+ae.getMessage());
+				String message = "";
+				if (ae.getMessage().length() > 1024) {
+					Assert.fail(testOutputFile + ".xml " + disableCompare + "***" + ae.getMessage().substring(0, 1024));
+				} else {
+					Assert.fail(testOutputFile + ".xml " + disableCompare + "***" + ae.getMessage());
+				}
 			} catch (java.lang.Exception e) {
+				testOutputFile = req.getPathGenerator().getResponseFile();
+				testOutputFile = fixTestOutput(testOutputFile,expectedVariable);
 				e.printStackTrace();
-				req.getTest().saveRequestURLs();
-				results = req.getPathGenerator().getResponseFile() +
-						".xml" +"***"+"TestID: " + req.getTest().getTestCaseID()+ " failed: " +
-						"\n "+e.getMessage()+"\n "+StringUtils.join(e.getStackTrace()).substring(0,1024	);
-				logger.info("TestID: " + req.getTest().getTestCaseID()+ " failed: " + StringUtils.join(
-					e.getStackTrace()).substring(0,1024));
-				e.printStackTrace();
-				Assert.fail(results);
-			
+				test.saveRequestURLs();
+
+				results = testOutputFile +
+					".xml" + "***" + "TestID: " + test.getTestCaseID() + " failed: " +
+					"\n " + e.getMessage() + "\n " + StringUtils.join(e.getStackTrace()).substring(0, 1024);
+				logger.info("TestID: " + test.getTestCaseID() + " failed: " + StringUtils.join(
+					e.getStackTrace()).substring(0, 1024));
+					e.printStackTrace();
+					Assert.fail(results);
+			} finally {
+				SQLToMap.Instance.cleanSQLMap();
 			}
 		}
+	}
+
+	private String fixTestOutput(String testOutputFile, String expectedVariable) {
+		if (!expectedVariable.isEmpty()){
+			String last = StringUtils.substringAfterLast(testOutputFile,"_");
+			testOutputFile = StringUtils.removeEnd(testOutputFile,"_"+ last);
+			testOutputFile = testOutputFile + "_" + expectedVariable;
+		}
+		return testOutputFile;
+	}
+
+	private String enableOrDisableCompare(TestCase test) {
+		String disableCompare = "";
+		if (test.getCurrentParsedRequest()
+				.getResponseTooLargeForCompareLink())
+		{
+			disableCompare = "disableCompare";
+		} else {
+			disableCompare = "";
+		}
+		return disableCompare;
 	}
 }

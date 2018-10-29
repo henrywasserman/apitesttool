@@ -15,7 +15,7 @@ public class RemoteShell extends Request {
 		super(test);
 	}
 
-	public void makeRequests() throws Exception {
+	public void sendRequest() throws Exception {
 
 		Connection conn = null;
 

@@ -1,9 +1,9 @@
 package com.pqi.responsecompare.ICD9;
 
-import com.pqi.responsecompare.configuration.OracleDbManager;
 import com.pqi.responsecompare.configuration.SSHTunnel;
 import com.pqi.responsecompare.request.Request;
 import com.pqi.responsecompare.request.TestCase;
+import com.pqi.responsecompare.sql.OracleDbManager;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 
@@ -27,7 +27,7 @@ public class VerifyICD extends Request
 		super(test);
 	}
 
-	public void makeRequests() throws Exception
+	public void sendRequest() throws Exception
 	{
 		String fs = File.separator;
 		logger.info("TestID: " + test.getTestCaseID());
@@ -86,7 +86,7 @@ public class VerifyICD extends Request
 		}
 		finally
 		{
-			//db.CloseStatement();
+			//db.closeStatement();
 			//db.closeConnection();
 			SSHTunnel.Instance.closeTunnel();
 		}

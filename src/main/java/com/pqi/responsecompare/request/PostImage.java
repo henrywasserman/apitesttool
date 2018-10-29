@@ -29,7 +29,7 @@ public class PostImage extends Request {
 		super();
 	}
 
-	public void makeRequests() throws Exception {
+	public void sendRequest() throws Exception {
 		HttpClient httpclient = HttpClientBuilder.create().build();
 		String postImageUrl = "";
 		String infoUrl = "";

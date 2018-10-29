@@ -78,8 +78,12 @@ public enum PropertiesSingleton {
 	
 	public String getProperty(String key) {
 		String prop = "";
-		if (props.get(key) != null) {
-			prop = props.get(key).toString();
+		if (System.getProperty(key) != null) {
+			prop = System.getProperty(key).toString();
+		} else {
+			if (props.get(key) != null) {
+				prop = props.get(key).toString();
+			}
 		}
 		return prop;
 	}

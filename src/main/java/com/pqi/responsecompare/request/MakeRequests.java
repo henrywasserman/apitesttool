@@ -166,7 +166,7 @@ public class MakeRequests extends junit.framework.TestCase {
 				pr.reloadEnvironmentAgnosticProperties();
 				if (pr.getRunRequest())
 				{
-					req.makeRequests();
+					req.sendRequest();
 					req.getTest().setComparisonType();
 					if (pr.getCompare())
 					{
@@ -299,7 +299,7 @@ public class MakeRequests extends junit.framework.TestCase {
 			test.addCommand("TESTRAIL", testrailusername + ":" + testrailpassword);
 			req = RequestFactory.Instance.getRequest(testcaseList.get(testNumber));
 			this.setName(testcaseName);
-			req.makeRequests();
+			req.sendRequest();
 			testresult = true;
 			testrailUpdated = true;
 			PropertiesSingleton.Instance.setProperty("emptyVariable","");

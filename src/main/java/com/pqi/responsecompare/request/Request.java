@@ -53,7 +53,7 @@ public abstract class Request {
 	protected boolean passfail = true;
 	protected boolean result = true;
 	protected HashMap<String, String> replacements = new HashMap<String, String>();
-	protected TestCase test = null;
+	public TestCase test = null;
 	protected HttpGet httpget = null;
 	protected HttpHead httphead = null;
 	protected HttpGetWithEntity httpgetwithbody = null;
@@ -204,7 +204,7 @@ public abstract class Request {
 		return results.toString();
 	}
 
-	public abstract void makeRequests() throws Exception;
+	public abstract void sendRequest() throws Exception;
 
 	protected void resetOut(PrintStream out) {
 		System.setOut(out);
@@ -215,20 +215,44 @@ public abstract class Request {
 				new FileOutputStream(java.io.FileDescriptor.out), 128), true));
 	}
 
-	protected void setupAndOutput(String response, String extension) throws Exception {
+	public void setupAndOutput(String response, String extension, String name) throws Exception {
+        //if (extension.equals(".json")) {
+        //    response = (new JSONObject(response)).toString(2);
+        //}
 
-		if (extension.equals(".json")) {
-			response = (new JSONObject(response)).toString(2);
-		}
+        fullpath = new StringBuffer(file);
 
-		fullpath = new StringBuffer(file);
-		outputfile = new StringBuffer(pathGenerator.getResponseDir() + test.getTestCaseID() + "_" + Integer.valueOf(test.getTestRequestCounter()).toString());
+        if (name.isEmpty()) {
+            outputfile = new StringBuffer(pathGenerator.getResponseDir() + test.getTestCaseID()
+                    + "_" + Integer.valueOf(test.getTestRequestCounter()).toString());
+        } else {
 
-		StringBuffer outputfileNoExt = new StringBuffer(outputfile);
-		outputfile.append(extension);
-		logger.debug("Output file is: " + outputfile.toString().replace(" ","\\ "));
-		FileUtils.writeStringToFile(new File(outputfile.toString()), response);
-	}
+              outputfile = new StringBuffer(pathGenerator.getResponseDir() + test.getTestCaseID()
+                        + "_" + name);
+
+        }
+        outputfile.append(extension);
+        logger.debug("Output file is: " + outputfile.toString());
+
+        FileUtils.writeStringToFile(new File(outputfile.toString()), response);
+    }
+
+	public void setupAndOutput(String response, String extension) throws Exception {
+
+        //if (extension.equals(".json")) {
+        //    response = (new JSONObject(response)).toString(2);
+        //}
+
+        fullpath = new StringBuffer(file);
+        outputfile = new StringBuffer(pathGenerator.getResponseDir()
+				+ test.getTestCaseID() + "_" +
+				Integer.valueOf(test.getTestRequestCounter()).toString());
+
+        StringBuffer outputfileNoExt = new StringBuffer(outputfile);
+        outputfile.append(extension);
+        logger.debug("Output file is: " + outputfile.toString().replace(" ","\\ "));
+        FileUtils.writeStringToFile(new File(outputfile.toString()), response);
+    }
 
 	protected void setupAndOutput(HttpResponse response) throws Exception {
 		fullpath = new StringBuffer(file);

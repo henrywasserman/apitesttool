@@ -16,7 +16,7 @@ public class CreateUsers extends Request {
 		super(test);
 	}
 
-	public void makeRequests() throws Exception {
+	public void sendRequest() throws Exception {
 
 		CloseableHttpResponse response = null;
 		post = new StringBuffer(builddir.toString());
@@ -43,7 +43,7 @@ public class CreateUsers extends Request {
 				JSONToMap.Instance.put("password", line_string[1]);
 
 				Post req = new Post(test);
-				req.makeRequests();
+				req.sendRequest();
 			}
 
 		} finally {

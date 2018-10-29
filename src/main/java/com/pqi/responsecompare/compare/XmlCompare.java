@@ -91,11 +91,11 @@ public class XmlCompare extends Compare {
 			Utilities.Instance.fileChecker(expectedtransformed);
 			Utilities.Instance.fileChecker(responseFile);
 
-			if (test.getRequests().get(test.getTestRequestCounter()).getXSLFile().isEmpty()) {
+			if (test.getCurrentParsedRequest().getXSLFile().isEmpty()) {
 				xsl = new File(pathGenerator.getXslDir() + "response.xsl");
 			}
 			else {
-				xsl = new File(pathGenerator.getXslDir() + test.getRequests().get(test.getTestRequestCounter()).getXSLFile());
+				xsl = new File(pathGenerator.getXslDir() + test.getCurrentParsedRequest().getXSLFile());
 			}
 
 			responsexml = FileUtils

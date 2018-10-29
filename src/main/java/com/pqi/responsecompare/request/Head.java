@@ -26,7 +26,7 @@ public class Head extends Request {
 		
 	}
 
-	public void makeRequests() throws Exception {
+	public void sendRequest() throws Exception {
 		CloseableHttpResponse response = null;
 		
 		post = new StringBuffer(builddir.toString());

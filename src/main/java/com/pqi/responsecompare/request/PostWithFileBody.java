@@ -5,7 +5,7 @@ import com.pqi.responsecompare.configuration.Utilities;
 import java.io.File;
 import java.lang.Integer;
 
-import junit.framework.Assert;
+import org.junit.Assert;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -27,7 +27,7 @@ public class PostWithFileBody extends Request {
 		  super(test);
 	  }	
 	
-	public void makeRequests() throws Exception {
+	public void sendRequest() throws Exception {
 		post = new StringBuffer(builddir.toString());
 		post.append(file);
 		
