@@ -1,5 +1,7 @@
 package com.pqi.responsecompare.request;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pqi.responsecompare.configuration.PropertiesSingleton;
 import com.pqi.responsecompare.configuration.Utilities;
 import com.pqi.responsecompare.json.HandleJSONRequest;
@@ -10,6 +12,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 
@@ -102,6 +105,7 @@ public class Get extends Request {
 
 			if (isJSONRequest(test_request_counter,response)) {
 				//HandleJSONRequest.Instance.handleJSON(outputfile);
+				System.setProperty("test.ext","json");
 				HandleJSONRequest.Instance.handleJSON(outputfile, test);
 				Map<String, String> variableMap = test.getRequests().get(test_request_counter).getVariableHash();
 				String key = "";

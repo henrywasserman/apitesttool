@@ -1,5 +1,7 @@
 package com.pqi.responsecompare.request;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pqi.responsecompare.configuration.PathGenerator;
 import com.pqi.responsecompare.configuration.PropertiesSingleton;
 import com.pqi.responsecompare.configuration.Utilities;
@@ -17,6 +19,7 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.*;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 import org.custommonkey.xmlunit.Transform;
@@ -268,9 +271,11 @@ public abstract class Request {
 
 		HttpEntity entity = response.getEntity();
 		if (entity != null) {
-			OutputStream outputstream = new FileOutputStream(outputfile.toString());
-			entity.writeTo(outputstream);
-			outputstream.close();
+			ObjectMapper mapper = new ObjectMapper();
+			String content = EntityUtils.toString(entity);
+			JsonNode jsonNode = mapper.readTree(content);
+			content = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(jsonNode);
+			FileUtils.writeStringToFile(new File(outputfile.toString()),content);
 		} else {
 			FileUtils.writeStringToFile(new File(outputfile.toString()), "");
 		}

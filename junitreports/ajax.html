@@ -39,7 +39,7 @@ This example demonstrates how to set left and right editors using ajax.
 			$('#compare').mergely({
 				width: 'auto',
 				height: 'auto', // containing div must be given a height
-				cmsettings: { readOnly: false },
+				cmsettings: { readOnly: false, lineNumbers: true },
 			})
 			var lhs_url = window.opener.lhs_url
 			var rhs_url = window.opener.rhs_url 
@@ -95,15 +95,20 @@ This example demonstrates how to set left and right editors using ajax.
 			document.body.addEventListener('drop', handleFileSelect, false);
 
 			function download_content(a, side) {
-				//a.innerHTML = "preparing content..";
-				var txt = $('#compare').mergely('get', side);
-				var datauri = "data:plain/text;charset=UTF-8," + encodeURIComponent(txt);
-				a.setAttribute('download', side+".txt");
+                //a.innerHTML = "preparing content..";
+                var txt = $('#compare').mergely('get', side);
+                var datauri = "data:plain/text;charset=UTF-8," + encodeURIComponent(txt);
+                if (side === "rhs") {
+                    a.setAttribute('download', window.opener.rhs_url.split("/").pop());
+                }
+                if (side == "lhs") {
+                    a.setAttribute('download', window.opener.lhs_url.split("/").pop());
+				}
 				a.setAttribute('href', datauri);
 				//a.innerHTML = "content ready.";
 			}
 			document.getElementById('save-lhs').addEventListener('mouseover', function() { download_content(this, "lhs"); }, false);
-			document.getElementById('save-rhs').addEventListener('mouseover', function() { download_content(this, "lhs"); }, false);
+			document.getElementById('save-rhs').addEventListener('mouseover', function() { download_content(this, "rhs"); }, false);
 			document.getElementById('ignorews').addEventListener('change', function() {
 				$('#compare').mergely('options', { ignorews: this.checked });
 			}, false);

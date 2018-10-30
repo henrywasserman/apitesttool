@@ -18,13 +18,11 @@
             <id>codelds</id>
             <url>http://central.maven.org/maven2</url>
         </repository>
-        <!--
         <repository>
             <id>splunk-artifactory</id>
             <name>Splunk Releases</name>
             <url>http://splunk.artifactoryonline.com/splunk/ext-releases-local</url>
         </repository>
-        -->
     </repositories>
     <dependencies>
         <dependency>
@@ -119,11 +117,11 @@
             <artifactId>ojdbc6</artifactId>
             <version>12.1.0.2</version>
         </dependency>
-        <!--<dependency>
+        <dependency>
             <groupId>com.splunk</groupId>
             <artifactId>splunk</artifactId>
             <version>1.6.0.0</version>
-        </dependency>-->
+        </dependency>
         <dependency>
             <groupId>org.fluttercode.datafactory</groupId>
             <artifactId>datafactory</artifactId>
