@@ -2,10 +2,12 @@ package com.pqi.responsecompare.request;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.flipkart.zjsonpatch.JsonDiff;
 import com.pqi.responsecompare.configuration.PathGenerator;
 import com.pqi.responsecompare.configuration.PropertiesSingleton;
 import com.pqi.responsecompare.configuration.Utilities;
 import com.pqi.responsecompare.json.JSONToMap;
+import com.pqi.responsecompare.reports.PatchToHTML;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -265,7 +267,6 @@ public abstract class Request {
 		String extension = getFileExtFromContentType(this, response);
 		StringBuffer outputfileNoExt = new StringBuffer(outputfile);
 		outputfile.append(extension);
-
 
 		logger.debug("Output file is: " + outputfile.toString().replace(" ","\\ "));
 

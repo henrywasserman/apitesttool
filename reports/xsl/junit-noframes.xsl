@@ -650,19 +650,19 @@
                     <tr>
                         <td>
                             <a target="_request"
-                               href="/job/{$JobName}/{$BuildNumber}/artifact/sqltesttool/data/consult/{$finalDir}request{$dataFile}.html">
+                               href="/job/{$JobName}/{$BuildNumber}/artifact/apitesttool/data/consult/{$finalDir}request{$dataFile}.html">
                                 Request
                             </a>
                         </td>
                         <td>
                             <a target="_response"
-                               href="/job/{$JobName}/{$BuildNumber}/artifact/sqltesttool/data/consult/{$finalDir}response{$dataFile}.{$testExt}">
+                               href="/job/{$JobName}/{$BuildNumber}/artifact/apitesttool/data/consult/{$finalDir}response{$dataFile}.{$testExt}">
                                 Response
                             </a>
                         </td>
                         <td>
                             <a target="_expectedresponse"
-                               href="/job/{$JobName}/{$BuildNumber}/artifact/sqltesttool/data/consult/{$finalDir}expectedresponse{$dataFile}.{$testExt}">
+                               href="/job/{$JobName}/{$BuildNumber}/artifact/apitesttool/data/consult/{$finalDir}expectedresponse{$dataFile}.{$testExt}">
                                 Expected Response
                             </a>
                         </td>
@@ -672,7 +672,7 @@
 
                         <td>
                             <a target="_differences"
-                               href="/job/{$JobName}/{$BuildNumber}/artifact/sqltesttool/data/consult/{$finalDir}response{$dataFile}_diff.html">
+                               href="/job/{$JobName}/{$BuildNumber}/artifact/apitesttool/data/consult/{$finalDir}response{$dataFile}_diff.html">
                                 Differences
                             </a>
                         </td>
@@ -721,7 +721,7 @@
             </xsl:when>
             <xsl:otherwise>
                 <td>
-                    <a href="javascript:lhs_url='/job/{$JobName}/{$BuildNumber}/artifact/sqltesttool/data/consult/{$finalDir}response/{$dataFile}.json';rhs_url='/job/{$JobName}/{$BuildNumber}/artifact/sqltesttool/data/consult/{$finalDir}expectedresponse/{$dataFile}.json';
+                    <a href="javascript:lhs_url='/job/{$JobName}/{$BuildNumber}/artifact/apitesttool/data/consult/{$finalDir}response/{$dataFile}.json';rhs_url='/job/{$JobName}/{$BuildNumber}/artifact/apitesttool/data/consult/{$finalDir}expectedresponse/{$dataFile}.json';
                                 window.open('ajax.html', 'File Diff', 'width=1600,height=800');">
 
                         Compare
